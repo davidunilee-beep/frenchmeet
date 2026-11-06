@@ -1,5 +1,5 @@
-const CACHE = 'bonjour-shell-v1';
-const SHELL = ['/', '/index.html', '/app.css', '/app.js', '/manifest.webmanifest', '/icons/app-192.png', '/icons/app-512.png'];
+const CACHE = 'bonjour-shell-v2';
+const SHELL = ['/', '/index.html', '/app.css', '/install.js', '/app.js', '/manifest.webmanifest', '/icons/app-192.png', '/icons/app-512.png'];
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(SHELL)));
   self.skipWaiting();

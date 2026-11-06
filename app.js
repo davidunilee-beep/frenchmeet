@@ -1,66 +1,6 @@
 (() => {
   'use strict';
   const $ = id => document.getElementById(id);
-  let installPrompt = null;
-  const standalone = window.matchMedia('(display-mode: standalone)');
-  const installed = () => standalone.matches || navigator.standalone === true;
-  const updateInstall = () => { $('installBanner').hidden = installed(); };
-  updateInstall();
-  standalone.addEventListener?.('change', updateInstall);
-  window.addEventListener('beforeinstallprompt', event => {
-    event.preventDefault();
-    installPrompt = event;
-    updateInstall();
-  });
-  window.addEventListener('appinstalled', () => {
-    installPrompt = null;
-    $('installBanner').hidden = true;
-    $('installDialog').close();
-  });
-  function showInstallGuide() {
-    const ios = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-    const android = /Android/.test(navigator.userAgent);
-    const inApp = /KAKAOTALK|Instagram|FBAN|FBAV|Line\//i.test(navigator.userAgent);
-    let steps;
-    if (inApp) {
-      $('installGuide').textContent = '앱 안의 브라우저에서는 설치가 제한될 수 있어요. 기본 브라우저에서 열어 주세요.';
-      steps = ['현재 화면의 메뉴(⋯)에서 외부 브라우저로 열기를 선택하세요.', ios ? 'Safari에서 공유 버튼을 누르세요.' : 'Chrome에서 메뉴(⋮)를 누르세요.', '홈 화면에 추가 또는 앱 설치를 선택한 뒤 추가하세요.'];
-    } else if (ios) {
-      $('installGuide').textContent = 'iPhone·iPad에서는 Safari의 공유 메뉴로 홈 화면에 추가할 수 있어요.';
-      steps = ['Safari에서 이 페이지를 여세요.', '공유 버튼(네모에서 위쪽 화살표)을 누르세요.', '홈 화면에 추가를 선택하고, 표시되면 웹 앱으로 열기를 켠 뒤 추가를 누르세요.'];
-    } else if (android) {
-      $('installGuide').textContent = 'Chrome 메뉴에서 앱을 홈 화면에 추가할 수 있어요.';
-      steps = ['Chrome에서 이 페이지를 여세요.', '오른쪽 위 메뉴(⋮)를 누르세요.', '홈 화면에 추가 또는 앱 설치를 선택하세요.'];
-    } else {
-      $('installGuide').textContent = '브라우저의 설치 메뉴를 이용해 앱처럼 바로 실행하세요.';
-      steps = ['Chrome·Edge에서는 주소창의 설치 아이콘 또는 메뉴의 앱 설치를 선택하세요.', 'Mac의 Safari에서는 파일 → Dock에 추가를 선택하세요.', '설치 메뉴가 보이지 않으면 지원되는 브라우저를 사용하거나 이 페이지를 북마크하세요.'];
-    }
-    $('installSteps').replaceChildren(...steps.map(text => {
-      const li = document.createElement('li'); li.textContent = text; return li;
-    }));
-    $('installDialog').showModal();
-  }
-  $('installButton').addEventListener('click', async () => {
-    if (!installPrompt) { showInstallGuide(); return; }
-    const prompt = installPrompt;
-    installPrompt = null;
-    $('installButton').disabled = true;
-    try {
-      await prompt.prompt();
-      const result = await prompt.userChoice;
-      if (result.outcome === 'accepted') $('installBanner').hidden = true;
-    } catch { showInstallGuide(); }
-    finally { $('installButton').disabled = false; }
-  });
-  document.querySelectorAll('[data-close]').forEach(button => {
-    button.addEventListener('click', () => $(button.dataset.close).close());
-  });
-  if ('serviceWorker' in navigator && window.isSecureContext) {
-    navigator.serviceWorker.register('/sw.js').catch(() => {
-      // The online learning app and manual installation guide still work.
-    });
-  }
-
   const dialog = $('authDialog');
   const form = $('authForm');
   let mode = 'login';

@@ -4,6 +4,7 @@ const fs = require('node:fs');
 const vm = require('node:vm');
 const path = require('node:path');
 const root = path.resolve(__dirname, '..');
+const installer = fs.readFileSync(path.join(root, 'install.js'), 'utf8');
 const source = fs.readFileSync(path.join(root, 'app.js'), 'utf8');
 function setup(options = {}) {
   const nodes = new Map();
@@ -27,17 +28,20 @@ function setup(options = {}) {
     async signOut(args) { calls.push(['logout', args]); if (options.logoutError) return { error: new Error('offline') }; authListener('SIGNED_OUT', null); return { error: null }; }
   };
   const listeners = {};
+  const navigations = [];
   const window = {
     APP_CONFIG: options.unconfigured ? {} : { supabaseUrl: 'https://example.supabase.co', supabasePublishableKey: 'sb_publishable_test' },
     supabase: options.noCdn ? undefined : { createClient: () => ({ auth }) },
     matchMedia: () => ({ matches: !!options.standalone, addEventListener() {} }),
     addEventListener: (event, fn) => { listeners[event] = fn; },
-    location: { href: 'https://bonjour.example/' },
+    location: { href: 'https://bonjour.example/?code=do-not-forward#access_token=private', assign: url => navigations.push(url) },
     isSecureContext: true
   };
   const navigator = { userAgent: options.userAgent || 'Chrome', platform: options.platform || '', maxTouchPoints: options.maxTouchPoints || 0, onLine: true, serviceWorker: { register: async () => ({}) } };
-  vm.runInNewContext(source, { window, navigator, document: { getElementById: get, querySelectorAll: () => [], createElement: () => new Element() }, URL });
-  return { get, calls, listeners, authListener };
+  const context = vm.createContext({ window, navigator, document: { getElementById: get, querySelectorAll: () => [], createElement: () => new Element() }, URL });
+  vm.runInContext(installer, context);
+  if (!options.installOnly) vm.runInContext(source, context);
+  return { get, calls, listeners, authListener, navigations };
 }
 test('successful login shows email and logout, clears password', async () => {
   const s = setup(); await s.get('loginButton').fire('click');
@@ -105,6 +109,47 @@ test('native prompt is used once, cancellation does not claim installed', async 
 });
 test('standalone launch hides install banner', () => {
   assert.equal(setup({ standalone: true }).get('installBanner').hidden, true);
+});
+test('Android Chrome has no menu popup while waiting and uses late installation event', async () => {
+  const s = setup({ userAgent: 'Android Chrome/130.0', installOnly: true });
+  await s.get('installButton').fire('click');
+  assert.notEqual(s.get('installDialog').open, true);
+  assert.match(s.get('installStatus').textContent, /설치 창을 준비/);
+  let prompts = 0;
+  s.listeners.beforeinstallprompt({ preventDefault() {}, prompt: async () => { prompts++; }, userChoice: Promise.resolve({ outcome: 'accepted' }) });
+  assert.equal(s.get('installButton').textContent, '앱 다운로드 ↗');
+  await s.get('installButton').fire('click');
+  assert.equal(prompts, 1);
+  assert.notEqual(s.get('installDialog').open, true);
+  assert.equal(s.get('installBanner').hidden, false);
+  s.listeners.appinstalled(); assert.equal(s.get('installBanner').hidden, true);
+});
+test('Android embedded browser opens Chrome directly without forwarding auth tokens', async () => {
+  const s = setup({ userAgent: 'Android Chrome/130.0 KAKAOTALK', installOnly: true });
+  await s.get('installButton').fire('click');
+  assert.notEqual(s.get('installDialog').open, true);
+  assert.equal(s.navigations.length, 1);
+  assert.match(s.navigations[0], /^intent:\/\/bonjour.example\/#Intent;/);
+  assert.match(s.navigations[0], /package=com.android.chrome/);
+  assert.doesNotMatch(s.navigations[0], /access_token|private|do-not-forward/);
+});
+test('prompt failures and cancelled installs on Android do not open instructions', async () => {
+  for (const failing of [false, true]) {
+    const s = setup({ userAgent: 'Android Chrome/130.0', installOnly: true });
+    s.listeners.beforeinstallprompt({ preventDefault() {}, prompt: async () => { if (failing) throw new Error('NotAllowed'); }, userChoice: Promise.resolve({ outcome: 'dismissed' }) });
+    await s.get('installButton').fire('click');
+    assert.notEqual(s.get('installDialog').open, true);
+    assert.equal(s.get('installButton').disabled, false);
+    assert.equal(s.get('installBanner').hidden, false);
+  }
+});
+test('native installation is available without loading authentication code', async () => {
+  const s = setup({ userAgent: 'Android Chrome/130.0', installOnly: true, noCdn: true });
+  let prompted = false;
+  s.listeners.beforeinstallprompt({ preventDefault() {}, prompt: async () => { prompted = true; }, userChoice: Promise.resolve({ outcome: 'dismissed' }) });
+  await s.get('installButton').fire('click'); assert.equal(prompted, true);
+  const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
+  assert.ok(html.indexOf('src="/install.js"') < html.indexOf('src="https://cdn.jsdelivr.net/npm/@supabase/'));
 });
 test('HTML inline syntax, DOM IDs and install assets are valid', () => {
   const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
