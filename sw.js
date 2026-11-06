@@ -1,4 +1,4 @@
-const CACHE = 'bonjour-shell-v2';
+const CACHE = 'bonjour-shell-v3';
 const SHELL = ['/', '/index.html', '/app.css', '/install.js', '/app.js', '/manifest.webmanifest', '/icons/app-192.png', '/icons/app-512.png'];
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(SHELL)));
@@ -18,8 +18,8 @@ self.addEventListener('fetch', event => {
     }).catch(() => caches.match('/index.html')));
   } else if (SHELL.includes(url.pathname)) {
     event.respondWith(fetch(event.request).then(response => {
-      if (response.ok) { const copy = response.clone(); event.waitUntil(caches.open(CACHE).then(cache => cache.put(event.request, copy))); }
+      if (response.ok) { const copy = response.clone(); event.waitUntil(caches.open(CACHE).then(cache => cache.put(url.pathname, copy))); }
       return response;
-    }).catch(() => caches.match(event.request)));
+    }).catch(() => caches.match(url.pathname)));
   }
 });

@@ -105,10 +105,10 @@ test('native prompt is used once, cancellation does not claim installed', async 
   assert.equal(prompts, 1); assert.equal(s.get('installBanner').hidden, false);
   await s.get('installButton').fire('click');
   assert.equal(prompts, 1); assert.equal(s.get('installDialog').open, true);
-  s.listeners.appinstalled(); assert.equal(s.get('installBanner').hidden, true);
+  s.listeners.appinstalled(); assert.equal(s.get('installBanner').hidden, false);
 });
 test('standalone launch hides install banner', () => {
-  assert.equal(setup({ standalone: true }).get('installBanner').hidden, true);
+  assert.equal(setup({ standalone: true, userAgent: 'Android Chrome/130.0' }).get('installBanner').hidden, true);
 });
 test('Android Chrome has no menu popup while waiting and uses late installation event', async () => {
   const s = setup({ userAgent: 'Android Chrome/130.0', installOnly: true });
@@ -149,7 +149,37 @@ test('native installation is available without loading authentication code', asy
   s.listeners.beforeinstallprompt({ preventDefault() {}, prompt: async () => { prompted = true; }, userChoice: Promise.resolve({ outcome: 'dismissed' }) });
   await s.get('installButton').fire('click'); assert.equal(prompted, true);
   const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
-  assert.ok(html.indexOf('src="/install.js"') < html.indexOf('src="https://cdn.jsdelivr.net/npm/@supabase/'));
+  assert.ok(html.indexOf('src="/install.js?') < html.indexOf('src="https://cdn.jsdelivr.net/npm/@supabase/'));
+});
+test('Windows browser keeps download and shortcut controls available', async () => {
+  const s = setup({ platform: 'Win32', userAgent: 'Windows Chrome/130.0' });
+  assert.equal(s.get('installBanner').hidden, false);
+  assert.equal(s.get('pcShortcut').hidden, false);
+  assert.equal(s.get('installButton').textContent, 'PC 앱 다운로드 ↗');
+  await s.get('installButton').fire('click');
+  assert.equal(s.get('installDialog').open, true);
+  assert.equal(s.get('pcDownload').hidden, false);
+  let count = 0;
+  s.listeners.beforeinstallprompt({ preventDefault() {}, prompt: async () => { count++; }, userChoice: Promise.resolve({ outcome: 'accepted' }) });
+  await s.get('installButton').fire('click'); assert.equal(count, 1);
+  s.listeners.appinstalled();
+  assert.equal(s.get('installBanner').hidden, false);
+  assert.equal(s.get('pcShortcut').hidden, false);
+});
+test('desktop installed app retains download entry while mobile hides it', async () => {
+  const s = setup({ platform: 'Win32', standalone: true });
+  assert.equal(s.get('installBanner').hidden, false);
+  assert.equal(s.get('installButton').textContent, 'PC 앱 설치 안내');
+  await s.get('installButton').fire('click');
+  assert.equal(s.get('pcDownload').hidden, false);
+  assert.equal(s.get('installDialog').open, true);
+  assert.equal(setup({ userAgent: 'iPhone', standalone: true }).get('installBanner').hidden, true);
+});
+test('Windows shortcut points to production and is delivered as a download', () => {
+  const shortcut = fs.readFileSync(path.join(root, 'downloads/Bonjour.url'), 'utf8');
+  assert.match(shortcut, /^\[InternetShortcut\]\r?\nURL=https:\/\/franchmeet.vercel.app\//);
+  const config = JSON.parse(fs.readFileSync(path.join(root, 'vercel.json'), 'utf8'));
+  assert.ok(config.headers.find(rule => rule.source === '/downloads/Bonjour.url').headers.some(header => header.key === 'Content-Disposition' && header.value.includes('attachment')));
 });
 test('HTML inline syntax, DOM IDs and install assets are valid', () => {
   const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');

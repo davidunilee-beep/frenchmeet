@@ -27,6 +27,8 @@
 
 Android에서는 설치 이벤트가 준비되면 다운로드 버튼에서 브라우저 설치 창을 직접 엽니다. 설치 이벤트가 아직 없을 때 메뉴 안내 팝업을 표시하지 않습니다. 앱 내 브라우저 등에서는 버튼을 누르면 Chrome으로 연결합니다. 브라우저가 설치 이벤트를 제공하지 않거나 이미 설치된 경우 사이트에서 설치 창을 강제로 띄울 수는 없습니다. 설치 코드는 인증 CDN보다 먼저 실행됩니다.
 
+PC에서는 상단 설치 영역을 계속 표시합니다. Windows에서는 `PC 바로가기 저장`으로 `Bonjour.url` 파일을 받아 바탕화면에 놓을 수 있습니다. 이 파일은 기본 브라우저에서 운영 사이트를 여는 인터넷 바로가기입니다. PWA 앱 설치와는 별도이며, 브라우저가 설치 이벤트를 제공하면 `PC 앱 다운로드` 버튼이 실제 설치 창을 엽니다.
+
 `config.js`의 `supabaseUrl`과 `supabasePublishableKey`에 Supabase 프로젝트 URL과 공개 publishable key(또는 legacy anon key)를 입력하세요. 비밀 키와 service_role 키는 넣지 마세요.
 
 Supabase 대시보드의 Authentication에서 Email 공급자를 켜고 URL Configuration의 Site URL을 운영 사이트 주소로 지정하세요. Redirect URLs에도 운영 사이트 주소(`/` 포함)를 등록하세요. 이메일 인증을 사용하면 회원가입 후 받은 메일의 인증 링크로 돌아와 로그인할 수 있습니다. 비밀번호 정책은 프로젝트 설정에서 관리합니다.

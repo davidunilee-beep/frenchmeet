@@ -10,8 +10,8 @@
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="apple-touch-icon" href="/icons/app-192.png">
 <link rel="icon" type="image/png" href="/icons/app-192.png">
-<link rel="stylesheet" href="/app.css">
-<script defer src="/install.js"></script>
+<link rel="stylesheet" href="/app.css?v=pc-install-1">
+<script defer src="/install.js?v=pc-install-1"></script>
 <script defer src="/config.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script defer src="/app.js"></script>
@@ -661,6 +661,7 @@
     <img src="/icons/app-192.png" width="42" height="42" alt="" class="install-icon">
     <div class="install-copy"><strong>Bonjour!를 홈 화면에</strong><span id="installStatus" role="status" aria-live="polite">앱으로 설치하고, 매일 가볍게 프랑스어 공부</span></div>
     <button type="button" id="installButton" class="install-button">앱 다운로드 ↗</button>
+    <a href="/downloads/Bonjour.url" download="Bonjour.url" class="shortcut-link" id="pcShortcut" hidden>PC 바로가기 저장</a>
   </div>
 </section>
 
@@ -702,6 +703,10 @@
   <h2 id="installTitle">홈 화면에서 바로 만나요</h2>
   <p id="installGuide" class="dialog-description"></p>
   <ol id="installSteps" class="install-steps"></ol>
+  <div id="pcDownload" hidden>
+    <a href="/downloads/Bonjour.url" download="Bonjour.url" class="dialog-primary shortcut-download">Windows 바로가기 다운로드</a>
+    <p class="field-hint">저장한 Bonjour.url 파일을 바탕화면으로 옮기면 브라우저에서 바로 실행할 수 있어요.</p>
+  </div>
   <button type="button" class="dialog-primary" data-close="installDialog">확인했어요</button>
 </dialog>
 
