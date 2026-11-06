@@ -4,4 +4,6 @@ node_modules/
 .env
 .env.*
 README.md
+scripts/
+tests/
 불어학습앱.html

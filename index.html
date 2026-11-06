@@ -4,6 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Bonjour! 프랑스어 학습</title>
+<meta name="theme-color" content="#1A2744">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="apple-touch-icon" href="/icons/app-192.png">
+<link rel="icon" type="image/png" href="/icons/app-192.png">
+<link rel="stylesheet" href="/app.css">
+<script defer src="/config.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script defer src="/app.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -645,6 +655,14 @@
 </head>
 <body>
 
+<section class="install-banner" id="installBanner" aria-label="앱 설치">
+  <div class="install-inner">
+    <img src="/icons/app-192.png" width="42" height="42" alt="" class="install-icon">
+    <div class="install-copy"><strong>Bonjour!를 홈 화면에</strong><span>앱으로 설치하고, 매일 가볍게 프랑스어 공부</span></div>
+    <button type="button" id="installButton" class="install-button">앱 설치하기 <span aria-hidden="true">↗</span></button>
+  </div>
+</section>
+
 <!-- HEADER -->
 <header class="app-header">
   <div class="header-inner">
@@ -655,6 +673,7 @@
         <span class="logo-sub">프랑스어 기초 학습</span>
       </div>
     </div>
+    <div class="header-right">
     <div class="header-stats">
       <div class="stat-pill">
         <span>오늘 학습</span>
@@ -667,8 +686,41 @@
         <span>/ 1000</span>
       </div>
     </div>
+    <div class="auth-actions">
+      <span id="userEmail" class="user-email" hidden></span>
+      <button type="button" id="loginButton" class="account-button">로그인</button>
+      <button type="button" id="logoutButton" class="account-button" hidden>로그아웃</button>
+    </div>
+    </div>
   </div>
 </header>
+
+<dialog id="installDialog" class="app-dialog" aria-labelledby="installTitle">
+  <button type="button" class="dialog-close" data-close="installDialog" aria-label="닫기">×</button>
+  <p class="dialog-eyebrow">BONJOUR! ON YOUR HOME SCREEN</p>
+  <h2 id="installTitle">홈 화면에서 바로 만나요</h2>
+  <p id="installGuide" class="dialog-description"></p>
+  <ol id="installSteps" class="install-steps"></ol>
+  <button type="button" class="dialog-primary" data-close="installDialog">확인했어요</button>
+</dialog>
+
+<dialog id="authDialog" class="app-dialog" aria-labelledby="authTitle" aria-describedby="authDescription">
+  <button type="button" id="closeAuth" class="dialog-close" aria-label="닫기">×</button>
+  <p class="dialog-eyebrow">BIENVENUE · 환영합니다</p>
+  <h2 id="authTitle">다시 만나 반가워요</h2>
+  <p id="authDescription" class="dialog-description">이메일로 로그인하고 프랑스어 공부를 시작하세요.</p>
+  <form id="authForm">
+    <label for="authEmail">이메일</label>
+    <input id="authEmail" name="email" type="email" autocomplete="email" placeholder="bonjour@example.com" required maxlength="254">
+    <label for="authPassword">비밀번호</label>
+    <input id="authPassword" name="password" type="password" autocomplete="current-password" placeholder="비밀번호를 입력하세요" required maxlength="128">
+    <p id="passwordHint" class="field-hint" hidden>8자 이상의 비밀번호를 입력하세요.</p>
+    <p id="authMessage" class="auth-message" role="status" aria-live="polite"></p>
+    <button type="submit" id="authSubmit" class="dialog-primary">로그인</button>
+  </form>
+  <div class="auth-switch"><span id="authSwitchLabel">아직 계정이 없으신가요?</span> <button type="button" id="authSwitch">회원가입</button></div>
+  <p class="auth-footnote">학습 기록은 이 기기의 브라우저에 저장됩니다.</p>
+</dialog>
 
 <!-- BODY -->
 <div class="app-body">
@@ -1762,6 +1814,7 @@ function triggerStarBurst() {
 
 // ── KEYBOARD ──
 document.addEventListener('keydown', e => {
+  if (document.querySelector('dialog[open]') || /INPUT|TEXTAREA|SELECT/.test(e.target.tagName) || e.target.isContentEditable) return;
   if (currentMode !== 'flash') return;
   if (e.key === 'ArrowRight') nextCard();
   if (e.key === 'ArrowLeft') prevCard();
