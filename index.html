@@ -1,0 +1,1775 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bonjour! 프랑스어 학습</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #FAF7F2;
+    --warm-white: #FFFFFF;
+    --navy: #1A2744;
+    --navy-light: #2C3E6B;
+    --gold: #C8933A;
+    --gold-light: #E8B96A;
+    --gold-pale: #FDF4E3;
+    --teal: #2D7D6F;
+    --teal-light: #3EA898;
+    --teal-pale: #E8F5F3;
+    --coral: #D4584A;
+    --coral-pale: #FDECEA;
+    --success: #3A8A4A;
+    --success-pale: #E8F5EB;
+    --text-dark: #1A2744;
+    --text-mid: #4A5568;
+    --text-light: #8896AA;
+    --border: #E8E4DC;
+    --shadow: 0 4px 24px rgba(26,39,68,0.08);
+    --shadow-hover: 0 8px 40px rgba(26,39,68,0.14);
+    --radius: 16px;
+    --radius-sm: 10px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text-dark);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── HEADER ── */
+  .app-header {
+    background: var(--navy);
+    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 20px rgba(26,39,68,0.25);
+  }
+  .header-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .logo-flag {
+    font-size: 28px;
+    line-height: 1;
+  }
+  .logo-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: #FFFFFF;
+    letter-spacing: -0.3px;
+  }
+  .logo-sub {
+    font-size: 11px;
+    color: var(--gold-light);
+    font-weight: 400;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    display: block;
+    margin-top: 1px;
+  }
+  .header-stats {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+  }
+  .stat-pill {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 20px;
+    padding: 6px 14px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .stat-pill span { color: #fff; font-size: 13px; font-weight: 500; }
+  .stat-pill .val { color: var(--gold-light); font-weight: 600; }
+
+  /* ── MAIN LAYOUT ── */
+  .app-body {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 28px 24px 60px;
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    position: sticky;
+    top: 80px;
+  }
+  .sidebar-title {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-light);
+    margin-bottom: 12px;
+    padding: 0 4px;
+  }
+  .cat-btn {
+    width: 100%;
+    background: var(--warm-white);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 12px 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 6px;
+    transition: all 0.2s;
+    text-align: left;
+  }
+  .cat-btn:hover {
+    border-color: var(--teal-light);
+    background: var(--teal-pale);
+    transform: translateX(2px);
+  }
+  .cat-btn.active {
+    background: var(--navy);
+    border-color: var(--navy);
+    box-shadow: var(--shadow);
+  }
+  .cat-icon {
+    font-size: 22px;
+    width: 32px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+  .cat-info { flex: 1; }
+  .cat-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-dark);
+    display: block;
+    line-height: 1.2;
+  }
+  .cat-btn.active .cat-name { color: #fff; }
+  .cat-count {
+    font-size: 11px;
+    color: var(--text-light);
+    display: block;
+    margin-top: 2px;
+  }
+  .cat-btn.active .cat-count { color: rgba(255,255,255,0.6); }
+
+  /* progress bar inside sidebar */
+  .cat-prog {
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    margin-top: 4px;
+    overflow: hidden;
+  }
+  .cat-prog-bar {
+    height: 100%;
+    background: var(--gold);
+    border-radius: 2px;
+    transition: width 0.5s;
+  }
+  .cat-btn.active .cat-prog { background: rgba(255,255,255,0.2); }
+  .cat-btn.active .cat-prog-bar { background: var(--gold-light); }
+
+  /* ── MAIN CONTENT ── */
+  .main-content { min-width: 0; }
+
+  /* mode tabs */
+  .mode-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    background: var(--warm-white);
+    padding: 6px;
+    border-radius: var(--radius-sm);
+    border: 1.5px solid var(--border);
+  }
+  .mode-tab {
+    flex: 1;
+    padding: 9px;
+    border: none;
+    background: transparent;
+    border-radius: 7px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-mid);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .mode-tab.active {
+    background: var(--navy);
+    color: #fff;
+    box-shadow: 0 2px 10px rgba(26,39,68,0.2);
+  }
+  .mode-tab:hover:not(.active) { background: var(--cream); }
+
+  /* ── CARD ── */
+  .word-card {
+    background: var(--warm-white);
+    border-radius: var(--radius);
+    border: 1.5px solid var(--border);
+    box-shadow: var(--shadow);
+    padding: 36px 40px 32px;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 20px;
+    transition: box-shadow 0.3s;
+  }
+  .word-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--teal), var(--gold));
+  }
+  .word-card.success-flash { animation: successPulse 0.5s ease; }
+  .word-card.error-flash { animation: errorPulse 0.4s ease; }
+
+  @keyframes successPulse {
+    0% { border-color: var(--border); box-shadow: var(--shadow); }
+    50% { border-color: var(--success); box-shadow: 0 0 0 4px rgba(58,138,74,0.15); }
+    100% { border-color: var(--border); box-shadow: var(--shadow); }
+  }
+  @keyframes errorPulse {
+    0% { border-color: var(--border); }
+    50% { border-color: var(--coral); box-shadow: 0 0 0 4px rgba(212,88,74,0.15); }
+    100% { border-color: var(--border); }
+  }
+
+  .card-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 28px;
+  }
+  .card-progress-label {
+    font-size: 12px;
+    color: var(--text-light);
+    font-weight: 500;
+  }
+  .progress-bar {
+    flex: 1;
+    height: 5px;
+    background: var(--border);
+    border-radius: 3px;
+    margin: 0 16px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--teal), var(--gold));
+    border-radius: 3px;
+    transition: width 0.4s ease;
+  }
+
+  .french-word {
+    font-family: 'Playfair Display', serif;
+    font-size: 52px;
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1.1;
+    margin-bottom: 8px;
+    letter-spacing: -1px;
+  }
+  .word-phonetic {
+    font-size: 16px;
+    color: var(--text-light);
+    margin-bottom: 20px;
+    font-style: italic;
+    letter-spacing: 0.3px;
+  }
+  .korean-word {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--teal);
+    margin-bottom: 8px;
+  }
+  .word-type {
+    display: inline-block;
+    background: var(--gold-pale);
+    color: var(--gold);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+
+  .sentence-box {
+    background: var(--teal-pale);
+    border-left: 3px solid var(--teal);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    padding: 16px 20px;
+    margin-bottom: 28px;
+  }
+  .sentence-fr {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--navy);
+    margin-bottom: 6px;
+    line-height: 1.5;
+  }
+  .sentence-ko {
+    font-size: 13px;
+    color: var(--text-mid);
+    line-height: 1.4;
+  }
+
+  /* ── CONTROLS ── */
+  .card-controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 11px 20px;
+    border-radius: var(--radius-sm);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 1.5px solid transparent;
+    white-space: nowrap;
+  }
+  .btn-primary {
+    background: var(--navy);
+    color: #fff;
+    border-color: var(--navy);
+  }
+  .btn-primary:hover {
+    background: var(--navy-light);
+    box-shadow: 0 4px 16px rgba(26,39,68,0.25);
+    transform: translateY(-1px);
+  }
+  .btn-teal {
+    background: var(--teal);
+    color: #fff;
+    border-color: var(--teal);
+  }
+  .btn-teal:hover {
+    background: var(--teal-light);
+    transform: translateY(-1px);
+  }
+  .btn-outline {
+    background: transparent;
+    color: var(--text-mid);
+    border-color: var(--border);
+  }
+  .btn-outline:hover {
+    border-color: var(--teal-light);
+    color: var(--teal);
+    background: var(--teal-pale);
+  }
+  .btn-gold {
+    background: var(--gold);
+    color: #fff;
+    border-color: var(--gold);
+  }
+  .btn-gold:hover { background: var(--gold-light); transform: translateY(-1px); }
+  .btn svg { width: 17px; height: 17px; flex-shrink: 0; }
+  .btn:active { transform: scale(0.97); }
+
+  .spacer { flex: 1; }
+
+  /* nav buttons */
+  .nav-btns { display: flex; gap: 8px; }
+  .nav-btn {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    border: 1.5px solid var(--border);
+    background: var(--warm-white);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    color: var(--text-mid);
+  }
+  .nav-btn:hover { border-color: var(--navy); color: var(--navy); transform: scale(1.05); }
+  .nav-btn:active { transform: scale(0.95); }
+  .nav-btn svg { width: 18px; height: 18px; }
+
+  /* ── RECORDING STATUS ── */
+  .record-status {
+    display: none;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 18px;
+    background: var(--coral-pale);
+    border: 1.5px solid var(--coral);
+    border-radius: var(--radius-sm);
+    margin-bottom: 16px;
+    font-size: 14px;
+    color: var(--coral);
+    font-weight: 500;
+  }
+  .record-status.visible { display: flex; }
+  .rec-dot {
+    width: 10px; height: 10px;
+    background: var(--coral);
+    border-radius: 50%;
+    animation: blink 0.8s infinite;
+    flex-shrink: 0;
+  }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  /* ── FEEDBACK OVERLAY ── */
+  .feedback-toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--navy);
+    color: #fff;
+    padding: 14px 28px;
+    border-radius: 30px;
+    font-size: 15px;
+    font-weight: 500;
+    box-shadow: 0 8px 40px rgba(26,39,68,0.3);
+    z-index: 1000;
+    transition: transform 0.35s cubic-bezier(.34,1.56,.64,1);
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .feedback-toast.show { transform: translateX(-50%) translateY(0); }
+  .feedback-toast.success { background: var(--success); }
+  .feedback-toast.error { background: var(--coral); }
+
+  /* ── GRID MODE ── */
+  .grid-view {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 14px;
+  }
+  .grid-card {
+    background: var(--warm-white);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 18px 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+  }
+  .grid-card:hover {
+    border-color: var(--teal-light);
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-2px);
+  }
+  .grid-card.learned { border-color: var(--success); }
+  .grid-card.learned::after {
+    content: '✓';
+    position: absolute;
+    top: 8px; right: 10px;
+    color: var(--success);
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .gc-fr {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 4px;
+    line-height: 1.2;
+  }
+  .gc-ko { font-size: 13px; color: var(--teal); font-weight: 500; }
+  .gc-play {
+    margin-top: 10px;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--teal-pale);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+  }
+  .gc-play:hover { background: var(--teal); }
+  .gc-play:hover svg { stroke: #fff; }
+  .gc-play svg { width: 13px; height: 13px; stroke: var(--teal); }
+
+  /* ── QUIZ MODE ── */
+  .quiz-container { }
+  .quiz-q {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--navy);
+    text-align: center;
+    margin-bottom: 8px;
+  }
+  .quiz-hint { text-align: center; font-size: 14px; color: var(--text-light); margin-bottom: 28px; }
+  .quiz-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .quiz-opt {
+    padding: 16px;
+    background: var(--warm-white);
+    border: 2px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text-dark);
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+  }
+  .quiz-opt:hover:not([disabled]) {
+    border-color: var(--teal);
+    background: var(--teal-pale);
+    color: var(--teal);
+  }
+  .quiz-opt.correct { background: var(--success-pale); border-color: var(--success); color: var(--success); }
+  .quiz-opt.wrong { background: var(--coral-pale); border-color: var(--coral); color: var(--coral); }
+  .quiz-opt[disabled] { cursor: default; }
+  .quiz-score-bar {
+    display: flex;
+    gap: 16px;
+    padding: 12px 20px;
+    background: var(--warm-white);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    margin-bottom: 20px;
+    font-size: 14px;
+  }
+  .quiz-score-bar span { color: var(--text-light); }
+  .quiz-score-bar strong { color: var(--navy); }
+
+  /* ── SEARCH ── */
+  .search-bar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .search-input {
+    flex: 1;
+    padding: 11px 16px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--text-dark);
+    background: var(--warm-white);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .search-input:focus { border-color: var(--teal); }
+
+  /* ── AUDIO PLAYING animation ── */
+  .audio-waves {
+    display: none;
+    align-items: center;
+    gap: 3px;
+    margin-left: 8px;
+  }
+  .audio-waves.playing { display: flex; }
+  .wave-bar {
+    width: 3px;
+    background: var(--teal);
+    border-radius: 2px;
+    animation: wave 0.7s ease infinite;
+  }
+  .wave-bar:nth-child(1) { height: 8px; animation-delay: 0s; }
+  .wave-bar:nth-child(2) { height: 14px; animation-delay: 0.1s; }
+  .wave-bar:nth-child(3) { height: 10px; animation-delay: 0.2s; }
+  .wave-bar:nth-child(4) { height: 16px; animation-delay: 0.05s; }
+  .wave-bar:nth-child(5) { height: 7px; animation-delay: 0.15s; }
+  @keyframes wave {
+    0%,100%{transform:scaleY(0.5)} 50%{transform:scaleY(1)}
+  }
+
+  /* ── STAR BURST SUCCESS ── */
+  .star-burst {
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+  }
+  .star {
+    position: absolute;
+    font-size: 22px;
+    animation: flyOut 0.8s ease forwards;
+  }
+  @keyframes flyOut {
+    0% { transform: scale(0) translate(0,0); opacity: 1; }
+    100% { transform: scale(1.5) translate(var(--tx), var(--ty)); opacity: 0; }
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .app-body { grid-template-columns: 1fr; }
+    .sidebar { position: static; }
+    .french-word { font-size: 38px; }
+    .quiz-options { grid-template-columns: 1fr; }
+    .header-stats { display: none; }
+  }
+
+  /* scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="app-header">
+  <div class="header-inner">
+    <div class="logo">
+      <span class="logo-flag">🇫🇷</span>
+      <div>
+        <span class="logo-text">Bonjour!</span>
+        <span class="logo-sub">프랑스어 기초 학습</span>
+      </div>
+    </div>
+    <div class="header-stats">
+      <div class="stat-pill">
+        <span>오늘 학습</span>
+        <span class="val" id="todayCount">0</span>
+        <span>단어</span>
+      </div>
+      <div class="stat-pill">
+        <span>완료</span>
+        <span class="val" id="learnedCount">0</span>
+        <span>/ 1000</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- BODY -->
+<div class="app-body">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <p class="sidebar-title">카테고리 선택</p>
+    <div id="catList"></div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main-content">
+    <!-- MODE TABS -->
+    <div class="mode-tabs">
+      <button class="mode-tab active" data-mode="flash" onclick="setMode('flash')">📖 플래시카드</button>
+      <button class="mode-tab" data-mode="grid" onclick="setMode('grid')">🗂️ 단어목록</button>
+      <button class="mode-tab" data-mode="quiz" onclick="setMode('quiz')">🎯 퀴즈</button>
+    </div>
+
+    <!-- FLASH CARD MODE -->
+    <div id="flashMode">
+      <div class="word-card" id="mainCard">
+        <div class="card-nav">
+          <span class="card-progress-label" id="cardLabel">1 / 50</span>
+          <div class="progress-bar">
+            <div class="progress-fill" id="progressFill" style="width:2%"></div>
+          </div>
+          <div class="nav-btns">
+            <button class="nav-btn" onclick="prevCard()" title="이전">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15,18 9,12 15,6"/></svg>
+            </button>
+            <button class="nav-btn" onclick="nextCard()" title="다음">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,18 15,12 9,6"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div style="display:flex;align-items:flex-start;gap:20px;flex-wrap:wrap;">
+          <div style="flex:1;min-width:200px">
+            <div class="french-word" id="cardFr">Bonjour</div>
+            <div class="word-phonetic" id="cardPhon">[bɔ̃ʒuʁ]</div>
+            <div class="korean-word" id="cardKo">안녕하세요</div>
+            <span class="word-type" id="cardType">감탄사</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px;align-items:center">
+            <button class="btn btn-teal" onclick="speakWord()" id="speakBtn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="11,5 6,9 2,9 2,15 6,15 11,19 11,5"/>
+                <path d="M15.54,8.46a5,5,0,0,1,0,7.07"/>
+                <path d="M19.07,4.93a10,10,0,0,1,0,14.14"/>
+              </svg>
+              발음 듣기
+              <div class="audio-waves" id="audioWaves">
+                <div class="wave-bar"></div><div class="wave-bar"></div>
+                <div class="wave-bar"></div><div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+              </div>
+            </button>
+            <button class="btn btn-gold" onclick="startRecord()" id="recordBtn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                <line x1="12" y1="19" x2="12" y2="23"/>
+                <line x1="8" y1="23" x2="16" y2="23"/>
+              </svg>
+              따라하기
+            </button>
+          </div>
+        </div>
+
+        <div class="record-status" id="recordStatus">
+          <div class="rec-dot"></div>
+          <span>녹음 중... 프랑스어로 말해보세요</span>
+        </div>
+
+        <div class="sentence-box">
+          <div class="sentence-fr" id="cardSentFr">Bonjour, comment allez-vous?</div>
+          <div class="sentence-ko" id="cardSentKo">안녕하세요, 어떻게 지내세요?</div>
+        </div>
+
+        <div class="card-controls">
+          <button class="btn btn-outline" onclick="markLearned()" id="learnedBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+            </svg>
+            <span id="learnedBtnText">학습 완료</span>
+          </button>
+          <div class="spacer"></div>
+          <button class="btn btn-outline" onclick="shuffleCards()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="16,3 21,3 21,8"/><line x1="4" y1="20" x2="21" y2="3"/>
+              <polyline points="21,16 21,21 16,21"/><line x1="15" y1="15" x2="21" y2="21"/>
+            </svg>
+            섞기
+          </button>
+          <button class="btn btn-primary" onclick="nextCard()">
+            다음 단어
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,18 15,12 9,6"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- GRID MODE -->
+    <div id="gridMode" class="hidden">
+      <div class="search-bar">
+        <input type="text" class="search-input" placeholder="🔍  단어 검색..." oninput="filterGrid(this.value)" id="searchInput">
+      </div>
+      <div class="grid-view" id="gridView"></div>
+    </div>
+
+    <!-- QUIZ MODE -->
+    <div id="quizMode" class="hidden">
+      <div class="quiz-score-bar">
+        <span>정답 <strong id="qCorrect">0</strong></span>
+        <span>오답 <strong id="qWrong">0</strong></span>
+        <span>정확도 <strong id="qAcc">-</strong></span>
+      </div>
+      <div class="word-card">
+        <p class="quiz-hint" id="quizHint">이 단어의 한국어 뜻은?</p>
+        <div class="quiz-q" id="quizQ">Bonjour</div>
+        <div style="text-align:center;margin-bottom:20px;">
+          <button class="btn btn-teal" onclick="speakQuiz()" style="margin:0 auto">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px">
+              <polygon points="11,5 6,9 2,9 2,15 6,15 11,19 11,5"/>
+              <path d="M15.54,8.46a5,5,0,0,1,0,7.07"/>
+            </svg>
+            발음 듣기
+          </button>
+        </div>
+        <div class="quiz-options" id="quizOptions"></div>
+        <div style="text-align:center">
+          <button class="btn btn-primary" onclick="nextQuiz()" id="nextQuizBtn">다음 문제 →</button>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- FEEDBACK TOAST -->
+<div class="feedback-toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════
+//  DATA — 1000 words across 10 categories
+// ═══════════════════════════════════════
+const CATEGORIES = [
+  { id:'daily', name:'일상생활', icon:'🏠', color:'teal' },
+  { id:'food',  name:'음식·음료', icon:'🍽️', color:'gold' },
+  { id:'animal',name:'동물',     icon:'🦁', color:'coral' },
+  { id:'nature',name:'자연·환경', icon:'🌿', color:'teal' },
+  { id:'school',name:'학교·교육', icon:'📚', color:'navy' },
+  { id:'travel',name:'여행·교통', icon:'✈️', color:'teal' },
+  { id:'body',  name:'신체·건강', icon:'💪', color:'coral' },
+  { id:'number',name:'숫자·시간', icon:'🔢', color:'gold' },
+  { id:'color', name:'색깔·모양', icon:'🎨', color:'coral' },
+  { id:'emotion',name:'감정·표현', icon:'😊', color:'gold' },
+];
+
+// Word object: { fr, phon, ko, type, sentFr, sentKo }
+const RAW = {
+daily: [
+  {fr:'Bonjour',phon:'[bɔ̃ʒuʁ]',ko:'안녕하세요',type:'감탄사',sentFr:'Bonjour, comment allez-vous?',sentKo:'안녕하세요, 어떻게 지내세요?'},
+  {fr:'Bonsoir',phon:'[bɔ̃swaʁ]',ko:'안녕하세요(저녁)',type:'감탄사',sentFr:'Bonsoir madame!',sentKo:'안녕하세요, 여사님!'},
+  {fr:'Au revoir',phon:'[o ʁəvwaʁ]',ko:'안녕히 가세요',type:'감탄사',sentFr:'Au revoir et bonne journée!',sentKo:'안녕히 가세요, 좋은 하루!'},
+  {fr:'Merci',phon:'[mɛʁsi]',ko:'감사합니다',type:'감탄사',sentFr:'Merci beaucoup pour tout.',sentKo:'모든 것에 감사드립니다.'},
+  {fr:'S\'il vous plaît',phon:'[sil vu plɛ]',ko:'부탁합니다',type:'감탄사',sentFr:'Un café, s\'il vous plaît.',sentKo:'커피 한 잔 부탁합니다.'},
+  {fr:'Oui',phon:'[wi]',ko:'네',type:'부사',sentFr:'Oui, je comprends.',sentKo:'네, 이해합니다.'},
+  {fr:'Non',phon:'[nɔ̃]',ko:'아니오',type:'부사',sentFr:'Non, ce n\'est pas vrai.',sentKo:'아니요, 그것은 사실이 아닙니다.'},
+  {fr:'Excusez-moi',phon:'[ɛkskyze mwa]',ko:'실례합니다',type:'감탄사',sentFr:'Excusez-moi, où est la gare?',sentKo:'실례합니다, 역이 어디에 있나요?'},
+  {fr:'Pardon',phon:'[paʁdɔ̃]',ko:'죄송합니다',type:'감탄사',sentFr:'Pardon, je n\'ai pas compris.',sentKo:'죄송합니다, 이해하지 못했습니다.'},
+  {fr:'Désolé',phon:'[dezɔle]',ko:'미안합니다',type:'형용사',sentFr:'Je suis désolé pour le retard.',sentKo:'늦어서 미안합니다.'},
+  {fr:'Maison',phon:'[mɛzɔ̃]',ko:'집',type:'명사',sentFr:'Ma maison est grande.',sentKo:'우리 집은 큽니다.'},
+  {fr:'Appartement',phon:'[apaʁtəmɑ̃]',ko:'아파트',type:'명사',sentFr:'J\'habite dans un appartement.',sentKo:'저는 아파트에 삽니다.'},
+  {fr:'Chambre',phon:'[ʃɑ̃bʁ]',ko:'방',type:'명사',sentFr:'Ma chambre est confortable.',sentKo:'내 방은 편안합니다.'},
+  {fr:'Cuisine',phon:'[kɥizin]',ko:'부엌',type:'명사',sentFr:'Je cuisine dans la cuisine.',sentKo:'저는 부엌에서 요리합니다.'},
+  {fr:'Salle de bain',phon:'[sal də bɛ̃]',ko:'욕실',type:'명사',sentFr:'La salle de bain est propre.',sentKo:'욕실은 깨끗합니다.'},
+  {fr:'Jardin',phon:'[ʒaʁdɛ̃]',ko:'정원',type:'명사',sentFr:'Nous avons un beau jardin.',sentKo:'우리는 아름다운 정원이 있습니다.'},
+  {fr:'Porte',phon:'[pɔʁt]',ko:'문',type:'명사',sentFr:'Fermez la porte, s\'il vous plaît.',sentKo:'문을 닫아주세요.'},
+  {fr:'Fenêtre',phon:'[fənɛtʁ]',ko:'창문',type:'명사',sentFr:'La fenêtre est ouverte.',sentKo:'창문이 열려 있습니다.'},
+  {fr:'Table',phon:'[tabl]',ko:'테이블',type:'명사',sentFr:'Mettez les livres sur la table.',sentKo:'테이블 위에 책을 놓으세요.'},
+  {fr:'Chaise',phon:'[ʃɛz]',ko:'의자',type:'명사',sentFr:'Asseyez-vous sur la chaise.',sentKo:'의자에 앉으세요.'},
+  {fr:'Lit',phon:'[li]',ko:'침대',type:'명사',sentFr:'Le lit est très confortable.',sentKo:'침대가 매우 편안합니다.'},
+  {fr:'Téléphone',phon:'[telefɔn]',ko:'전화기',type:'명사',sentFr:'Mon téléphone sonne.',sentKo:'내 전화기가 울립니다.'},
+  {fr:'Ordinateur',phon:'[ɔʁdinatœʁ]',ko:'컴퓨터',type:'명사',sentFr:'J\'utilise mon ordinateur tous les jours.',sentKo:'저는 매일 컴퓨터를 사용합니다.'},
+  {fr:'Clé',phon:'[kle]',ko:'열쇠',type:'명사',sentFr:'Où est ma clé?',sentKo:'내 열쇠가 어디 있나요?'},
+  {fr:'Argent',phon:'[aʁʒɑ̃]',ko:'돈',type:'명사',sentFr:'Je n\'ai pas beaucoup d\'argent.',sentKo:'저는 돈이 많지 않습니다.'},
+  {fr:'Travail',phon:'[tʁavaj]',ko:'일',type:'명사',sentFr:'J\'aime mon travail.',sentKo:'저는 제 일을 좋아합니다.'},
+  {fr:'Famille',phon:'[famij]',ko:'가족',type:'명사',sentFr:'Ma famille est importante.',sentKo:'내 가족은 소중합니다.'},
+  {fr:'Ami',phon:'[ami]',ko:'친구',type:'명사',sentFr:'Mon ami s\'appelle Pierre.',sentKo:'내 친구 이름은 피에르입니다.'},
+  {fr:'Voisin',phon:'[vwazɛ̃]',ko:'이웃',type:'명사',sentFr:'Mon voisin est sympathique.',sentKo:'내 이웃은 친절합니다.'},
+  {fr:'Supermarché',phon:'[sypɛʁmaʁʃe]',ko:'슈퍼마켓',type:'명사',sentFr:'Je vais au supermarché.',sentKo:'저는 슈퍼마켓에 갑니다.'},
+  {fr:'Rue',phon:'[ʁy]',ko:'거리',type:'명사',sentFr:'Je marche dans la rue.',sentKo:'저는 거리를 걷습니다.'},
+  {fr:'Quartier',phon:'[kaʁtje]',ko:'동네',type:'명사',sentFr:'C\'est un beau quartier.',sentKo:'이것은 아름다운 동네입니다.'},
+  {fr:'Matin',phon:'[matɛ̃]',ko:'아침',type:'명사',sentFr:'Bonjour le matin!',sentKo:'아침에 안녕!'},
+  {fr:'Soir',phon:'[swaʁ]',ko:'저녁',type:'명사',sentFr:'Le soir, je me repose.',sentKo:'저녁에 저는 쉽니다.'},
+  {fr:'Nuit',phon:'[nɥi]',ko:'밤',type:'명사',sentFr:'Bonne nuit!',sentKo:'잘 자요!'},
+  {fr:'Semaine',phon:'[səmɛn]',ko:'주',type:'명사',sentFr:'La semaine prochaine.',sentKo:'다음 주'},
+  {fr:'Mois',phon:'[mwa]',ko:'달',type:'명사',sentFr:'Le mois de janvier.',sentKo:'1월달'},
+  {fr:'Année',phon:'[ane]',ko:'해',type:'명사',sentFr:'Bonne année!',sentKo:'새해 복 많이 받으세요!'},
+  {fr:'Aujourd\'hui',phon:"[oʒuʁdɥi]",ko:'오늘',type:'부사',sentFr:"Aujourd'hui il fait beau.",sentKo:'오늘은 날씨가 좋습니다.'},
+  {fr:'Demain',phon:'[dəmɛ̃]',ko:'내일',type:'부사',sentFr:'Je viendrai demain.',sentKo:'내일 올게요.'},
+  {fr:'Hier',phon:'[jɛʁ]',ko:'어제',type:'부사',sentFr:'Hier j\'étais fatigué.',sentKo:'어제 저는 피곤했습니다.'},
+  {fr:'Maintenant',phon:'[mɛ̃tnɑ̃]',ko:'지금',type:'부사',sentFr:'Je suis prêt maintenant.',sentKo:'저는 지금 준비됐습니다.'},
+  {fr:'Toujours',phon:'[tuʒuʁ]',ko:'항상',type:'부사',sentFr:'Je t\'aimerai toujours.',sentKo:'저는 항상 당신을 사랑할 것입니다.'},
+  {fr:'Jamais',phon:'[ʒamɛ]',ko:'절대로',type:'부사',sentFr:'Je ne mens jamais.',sentKo:'저는 절대 거짓말하지 않습니다.'},
+  {fr:'Souvent',phon:'[suvɑ̃]',ko:'자주',type:'부사',sentFr:'Je viens souvent ici.',sentKo:'저는 여기에 자주 옵니다.'},
+  {fr:'Quelquefois',phon:'[kɛlkəfwa]',ko:'가끔',type:'부사',sentFr:'Je joue quelquefois au tennis.',sentKo:'저는 가끔 테니스를 칩니다.'},
+  {fr:'Ici',phon:'[isi]',ko:'여기',type:'부사',sentFr:'Venez ici, s\'il vous plaît.',sentKo:'여기로 오세요.'},
+  {fr:'Là-bas',phon:'[la ba]',ko:'저기',type:'부사',sentFr:'Il est là-bas.',sentKo:'그는 저기 있습니다.'},
+  {fr:'Ensemble',phon:'[ɑ̃sɑ̃bl]',ko:'함께',type:'부사',sentFr:'Allons ensemble.',sentKo:'함께 가요.'},
+],
+food: [
+  {fr:'Pain',phon:'[pɛ̃]',ko:'빵',type:'명사',sentFr:'Je mange du pain au petit déjeuner.',sentKo:'나는 아침에 빵을 먹습니다.'},
+  {fr:'Eau',phon:'[o]',ko:'물',type:'명사',sentFr:'Je bois de l\'eau.',sentKo:'저는 물을 마십니다.'},
+  {fr:'Lait',phon:'[lɛ]',ko:'우유',type:'명사',sentFr:'Le lait est frais.',sentKo:'우유가 신선합니다.'},
+  {fr:'Café',phon:'[kafe]',ko:'커피',type:'명사',sentFr:'Je prends un café le matin.',sentKo:'아침에 커피 한 잔 마십니다.'},
+  {fr:'Thé',phon:'[te]',ko:'차',type:'명사',sentFr:'Le thé est chaud.',sentKo:'차가 뜨겁습니다.'},
+  {fr:'Jus',phon:'[ʒy]',ko:'주스',type:'명사',sentFr:'Je voudrais un jus d\'orange.',sentKo:'오렌지 주스를 원합니다.'},
+  {fr:'Bière',phon:'[bjɛʁ]',ko:'맥주',type:'명사',sentFr:'Une bière, s\'il vous plaît.',sentKo:'맥주 한 잔 부탁합니다.'},
+  {fr:'Vin',phon:'[vɛ̃]',ko:'와인',type:'명사',sentFr:'Le vin rouge est délicieux.',sentKo:'레드 와인이 맛있습니다.'},
+  {fr:'Fromage',phon:'[fʁomaʒ]',ko:'치즈',type:'명사',sentFr:'Le fromage français est excellent.',sentKo:'프랑스 치즈는 훌륭합니다.'},
+  {fr:'Beurre',phon:'[bœʁ]',ko:'버터',type:'명사',sentFr:'Passez-moi le beurre.',sentKo:'버터를 건네주세요.'},
+  {fr:'Viande',phon:'[vjɑ̃d]',ko:'고기',type:'명사',sentFr:'J\'aime la viande grillée.',sentKo:'저는 구운 고기를 좋아합니다.'},
+  {fr:'Poulet',phon:'[pulɛ]',ko:'닭고기',type:'명사',sentFr:'Le poulet rôti est savoureux.',sentKo:'로스트 치킨이 맛있습니다.'},
+  {fr:'Poisson',phon:'[pwasɔ̃]',ko:'생선',type:'명사',sentFr:'Le poisson est frais.',sentKo:'생선이 신선합니다.'},
+  {fr:'Soupe',phon:'[sup]',ko:'수프',type:'명사',sentFr:'La soupe est chaude.',sentKo:'수프가 뜨겁습니다.'},
+  {fr:'Salade',phon:'[salad]',ko:'샐러드',type:'명사',sentFr:'Je commande une salade.',sentKo:'샐러드를 주문합니다.'},
+  {fr:'Tomate',phon:'[tɔmat]',ko:'토마토',type:'명사',sentFr:'La tomate est rouge.',sentKo:'토마토는 빨갑니다.'},
+  {fr:'Oignon',phon:'[ɔɲɔ̃]',ko:'양파',type:'명사',sentFr:'J\'ajoute des oignons.',sentKo:'양파를 넣습니다.'},
+  {fr:'Pomme de terre',phon:'[pɔm də tɛʁ]',ko:'감자',type:'명사',sentFr:'Les pommes de terre sont cuites.',sentKo:'감자가 익었습니다.'},
+  {fr:'Carotte',phon:'[kaʁɔt]',ko:'당근',type:'명사',sentFr:'Les carottes sont bonnes.',sentKo:'당근은 건강에 좋습니다.'},
+  {fr:'Sucre',phon:'[sykʁ]',ko:'설탕',type:'명사',sentFr:'Sans sucre, s\'il vous plaît.',sentKo:'설탕 없이 부탁합니다.'},
+  {fr:'Sel',phon:'[sɛl]',ko:'소금',type:'명사',sentFr:'Donnez-moi le sel.',sentKo:'소금을 주세요.'},
+  {fr:'Œuf',phon:'[œf]',ko:'달걀',type:'명사',sentFr:'Je veux deux œufs.',sentKo:'달걀 두 개를 원합니다.'},
+  {fr:'Gâteau',phon:'[ɡɑto]',ko:'케이크',type:'명사',sentFr:'Le gâteau au chocolat est délicieux.',sentKo:'초콜릿 케이크가 맛있습니다.'},
+  {fr:'Glace',phon:'[ɡlas]',ko:'아이스크림',type:'명사',sentFr:'J\'adore la glace à la vanille.',sentKo:'바닐라 아이스크림을 좋아합니다.'},
+  {fr:'Croissant',phon:'[kʁwasɑ̃]',ko:'크루아상',type:'명사',sentFr:'Un croissant au beurre.',sentKo:'버터 크루아상 하나.'},
+  {fr:'Baguette',phon:'[baɡɛt]',ko:'바게트',type:'명사',sentFr:'La baguette est croustillante.',sentKo:'바게트가 바삭합니다.'},
+  {fr:'Restaurant',phon:'[ʁɛstɔʁɑ̃]',ko:'식당',type:'명사',sentFr:'Allons au restaurant.',sentKo:'식당에 가요.'},
+  {fr:'Menu',phon:'[məny]',ko:'메뉴',type:'명사',sentFr:'Puis-je voir le menu?',sentKo:'메뉴를 볼 수 있을까요?'},
+  {fr:'Addition',phon:'[adisjɔ̃]',ko:'계산서',type:'명사',sentFr:'L\'addition, s\'il vous plaît.',sentKo:'계산서 주세요.'},
+  {fr:'Assiette',phon:'[asjɛt]',ko:'접시',type:'명사',sentFr:'L\'assiette est propre.',sentKo:'접시가 깨끗합니다.'},
+  {fr:'Verre',phon:'[vɛʁ]',ko:'잔',type:'명사',sentFr:'Un verre d\'eau.',sentKo:'물 한 잔.'},
+  {fr:'Fourchette',phon:'[fuʁʃɛt]',ko:'포크',type:'명사',sentFr:'Donnez-moi une fourchette.',sentKo:'포크를 주세요.'},
+  {fr:'Couteau',phon:'[kuto]',ko:'칼',type:'명사',sentFr:'Le couteau est tranchant.',sentKo:'칼이 날카롭습니다.'},
+  {fr:'Cuillère',phon:'[kɥijɛʁ]',ko:'숟가락',type:'명사',sentFr:'Je mange avec une cuillère.',sentKo:'숟가락으로 먹습니다.'},
+  {fr:'Petit déjeuner',phon:'[pəti deʒœne]',ko:'아침 식사',type:'명사',sentFr:'Le petit déjeuner est prêt.',sentKo:'아침 식사가 준비되었습니다.'},
+  {fr:'Déjeuner',phon:'[deʒœne]',ko:'점심 식사',type:'명사',sentFr:'Le déjeuner est à midi.',sentKo:'점심은 정오에 있습니다.'},
+  {fr:'Dîner',phon:'[dine]',ko:'저녁 식사',type:'명사',sentFr:'Nous dînons ensemble.',sentKo:'우리는 함께 저녁을 먹습니다.'},
+  {fr:'Délicieux',phon:'[delisjø]',ko:'맛있는',type:'형용사',sentFr:'Ce plat est délicieux!',sentKo:'이 요리가 맛있습니다!'},
+  {fr:'Chaud',phon:'[ʃo]',ko:'뜨거운',type:'형용사',sentFr:'La soupe est chaude.',sentKo:'수프가 뜨겁습니다.'},
+  {fr:'Froid',phon:'[fʁwa]',ko:'차가운',type:'형용사',sentFr:'La glace est froide.',sentKo:'아이스크림이 차갑습니다.'},
+  {fr:'Épicé',phon:'[epise]',ko:'매운',type:'형용사',sentFr:'Ce plat est épicé.',sentKo:'이 요리는 맵습니다.'},
+  {fr:'Sucré',phon:'[sykʁe]',ko:'달콤한',type:'형용사',sentFr:'Ce dessert est sucré.',sentKo:'이 디저트는 달콤합니다.'},
+  {fr:'Salé',phon:'[sale]',ko:'짠',type:'형용사',sentFr:'La soupe est trop salée.',sentKo:'수프가 너무 짭니다.'},
+  {fr:'Amer',phon:'[amɛʁ]',ko:'쓴',type:'형용사',sentFr:'Le café est amer.',sentKo:'커피가 씁쓸합니다.'},
+  {fr:'Acide',phon:'[asid]',ko:'신',type:'형용사',sentFr:'Le citron est acide.',sentKo:'레몬은 십니다.'},
+  {fr:'Fruit',phon:'[fʁɥi]',ko:'과일',type:'명사',sentFr:'J\'aime les fruits.',sentKo:'저는 과일을 좋아합니다.'},
+  {fr:'Pomme',phon:'[pɔm]',ko:'사과',type:'명사',sentFr:'Une pomme par jour.',sentKo:'하루에 사과 하나.'},
+  {fr:'Banane',phon:'[banan]',ko:'바나나',type:'명사',sentFr:'La banane est jaune.',sentKo:'바나나는 노랗습니다.'},
+  {fr:'Orange',phon:'[ɔʁɑ̃ʒ]',ko:'오렌지',type:'명사',sentFr:'L\'orange est sucrée.',sentKo:'오렌지는 달콤합니다.'},
+  {fr:'Légume',phon:'[leɡym]',ko:'채소',type:'명사',sentFr:'Mangez vos légumes!',sentKo:'채소를 드세요!'},
+],
+animal: [
+  {fr:'Chien',phon:'[ʃjɛ̃]',ko:'개',type:'명사',sentFr:'Mon chien est gentil.',sentKo:'내 개는 순합니다.'},
+  {fr:'Chat',phon:'[ʃa]',ko:'고양이',type:'명사',sentFr:'Le chat dort sur le canapé.',sentKo:'고양이가 소파에서 자고 있습니다.'},
+  {fr:'Cheval',phon:'[ʃəval]',ko:'말',type:'명사',sentFr:'Le cheval est rapide.',sentKo:'말은 빠릅니다.'},
+  {fr:'Vache',phon:'[vaʃ]',ko:'소',type:'명사',sentFr:'La vache mange de l\'herbe.',sentKo:'소는 풀을 먹습니다.'},
+  {fr:'Cochon',phon:'[kɔʃɔ̃]',ko:'돼지',type:'명사',sentFr:'Le cochon est rose.',sentKo:'돼지는 분홍색입니다.'},
+  {fr:'Mouton',phon:'[mutɔ̃]',ko:'양',type:'명사',sentFr:'Le mouton a de la laine.',sentKo:'양은 양털이 있습니다.'},
+  {fr:'Lion',phon:'[ljɔ̃]',ko:'사자',type:'명사',sentFr:'Le lion est le roi des animaux.',sentKo:'사자는 동물의 왕입니다.'},
+  {fr:'Tigre',phon:'[tiɡʁ]',ko:'호랑이',type:'명사',sentFr:'Le tigre est rayé.',sentKo:'호랑이는 줄무늬가 있습니다.'},
+  {fr:'Éléphant',phon:'[elefɑ̃]',ko:'코끼리',type:'명사',sentFr:'L\'éléphant a une longue trompe.',sentKo:'코끼리는 긴 코가 있습니다.'},
+  {fr:'Girafe',phon:'[ʒiʁaf]',ko:'기린',type:'명사',sentFr:'La girafe a un long cou.',sentKo:'기린은 긴 목이 있습니다.'},
+  {fr:'Singe',phon:'[sɛ̃ʒ]',ko:'원숭이',type:'명사',sentFr:'Le singe est intelligent.',sentKo:'원숭이는 영리합니다.'},
+  {fr:'Oiseau',phon:'[wazo]',ko:'새',type:'명사',sentFr:'L\'oiseau chante.',sentKo:'새가 노래합니다.'},
+  {fr:'Poule',phon:'[pul]',ko:'닭',type:'명사',sentFr:'La poule pond des œufs.',sentKo:'닭은 달걀을 낳습니다.'},
+  {fr:'Canard',phon:'[kanaʁ]',ko:'오리',type:'명사',sentFr:'Le canard nage dans l\'étang.',sentKo:'오리가 연못에서 헤엄칩니다.'},
+  {fr:'Lapin',phon:'[lapɛ̃]',ko:'토끼',type:'명사',sentFr:'Le lapin saute.',sentKo:'토끼가 뜁니다.'},
+  {fr:'Renard',phon:'[ʁənaʁ]',ko:'여우',type:'명사',sentFr:'Le renard est rusé.',sentKo:'여우는 교활합니다.'},
+  {fr:'Loup',phon:'[lu]',ko:'늑대',type:'명사',sentFr:'Le loup hurle la nuit.',sentKo:'늑대가 밤에 울부짖습니다.'},
+  {fr:'Ours',phon:'[uʁs]',ko:'곰',type:'명사',sentFr:'L\'ours hiberne en hiver.',sentKo:'곰은 겨울에 동면합니다.'},
+  {fr:'Serpent',phon:'[sɛʁpɑ̃]',ko:'뱀',type:'명사',sentFr:'Le serpent est long.',sentKo:'뱀은 깁니다.'},
+  {fr:'Grenouille',phon:'[ɡʁənuj]',ko:'개구리',type:'명사',sentFr:'La grenouille saute.',sentKo:'개구리가 뜁니다.'},
+  {fr:'Tortue',phon:'[tɔʁty]',ko:'거북이',type:'명사',sentFr:'La tortue est lente.',sentKo:'거북이는 느립니다.'},
+  {fr:'Papillon',phon:'[papijɔ̃]',ko:'나비',type:'명사',sentFr:'Le papillon est coloré.',sentKo:'나비는 화려합니다.'},
+  {fr:'Abeille',phon:'[abɛj]',ko:'벌',type:'명사',sentFr:'L\'abeille fait du miel.',sentKo:'벌은 꿀을 만듭니다.'},
+  {fr:'Araignée',phon:'[aʁɛɲe]',ko:'거미',type:'명사',sentFr:'L\'araignée tisse sa toile.',sentKo:'거미가 거미줄을 짭니다.'},
+  {fr:'Souris',phon:'[suʁi]',ko:'쥐',type:'명사',sentFr:'La souris est petite.',sentKo:'쥐는 작습니다.'},
+  {fr:'Chèvre',phon:'[ʃɛvʁ]',ko:'염소',type:'명사',sentFr:'La chèvre mange de l\'herbe.',sentKo:'염소는 풀을 먹습니다.'},
+  {fr:'Âne',phon:'[an]',ko:'당나귀',type:'명사',sentFr:'L\'âne porte des charges.',sentKo:'당나귀는 짐을 나릅니다.'},
+  {fr:'Dauphin',phon:'[dofɛ̃]',ko:'돌고래',type:'명사',sentFr:'Le dauphin est intelligent.',sentKo:'돌고래는 영리합니다.'},
+  {fr:'Baleine',phon:'[balɛn]',ko:'고래',type:'명사',sentFr:'La baleine est énorme.',sentKo:'고래는 거대합니다.'},
+  {fr:'Requin',phon:'[ʁəkɛ̃]',ko:'상어',type:'명사',sentFr:'Le requin est dangereux.',sentKo:'상어는 위험합니다.'},
+  {fr:'Hibou',phon:'[ibu]',ko:'올빼미',type:'명사',sentFr:'Le hibou voit la nuit.',sentKo:'올빼미는 밤에 볼 수 있습니다.'},
+  {fr:'Aigle',phon:'[ɛɡl]',ko:'독수리',type:'명사',sentFr:'L\'aigle vole haut.',sentKo:'독수리는 높이 납니다.'},
+  {fr:'Perroquet',phon:'[pɛʁɔkɛ]',ko:'앵무새',type:'명사',sentFr:'Le perroquet parle.',sentKo:'앵무새가 말합니다.'},
+  {fr:'Zèbre',phon:'[zɛbʁ]',ko:'얼룩말',type:'명사',sentFr:'Le zèbre a des rayures.',sentKo:'얼룩말은 줄무늬가 있습니다.'},
+  {fr:'Crocodile',phon:'[kʁɔkɔdil]',ko:'악어',type:'명사',sentFr:'Le crocodile est reptile.',sentKo:'악어는 파충류입니다.'},
+  {fr:'Panda',phon:'[pɑ̃da]',ko:'판다',type:'명사',sentFr:'Le panda mange du bambou.',sentKo:'판다는 대나무를 먹습니다.'},
+  {fr:'Koala',phon:'[kɔala]',ko:'코알라',type:'명사',sentFr:'Le koala dort beaucoup.',sentKo:'코알라는 많이 잡니다.'},
+  {fr:'Kangourou',phon:'[kɑ̃ɡuʁu]',ko:'캥거루',type:'명사',sentFr:'Le kangourou saute.',sentKo:'캥거루는 뜁니다.'},
+  {fr:'Flamant',phon:'[flamɑ̃]',ko:'홍학',type:'명사',sentFr:'Le flamant rose est beau.',sentKo:'홍학은 아름답습니다.'},
+  {fr:'Écureuil',phon:'[ekyʁœj]',ko:'다람쥐',type:'명사',sentFr:'L\'écureuil mange des noix.',sentKo:'다람쥐는 견과류를 먹습니다.'},
+  {fr:'Chouette',phon:'[ʃwɛt]',ko:'부엉이',type:'명사',sentFr:'La chouette est nocturne.',sentKo:'부엉이는 야행성입니다.'},
+  {fr:'Mouche',phon:'[muʃ]',ko:'파리',type:'명사',sentFr:'La mouche est agaçante.',sentKo:'파리는 성가십니다.'},
+  {fr:'Moustique',phon:'[mustik]',ko:'모기',type:'명사',sentFr:'Le moustique pique.',sentKo:'모기가 뭅니다.'},
+  {fr:'Fourmi',phon:'[fuʁmi]',ko:'개미',type:'명사',sentFr:'La fourmi est travailleuse.',sentKo:'개미는 부지런합니다.'},
+  {fr:'Cigale',phon:'[siɡal]',ko:'매미',type:'명사',sentFr:'La cigale chante en été.',sentKo:'매미는 여름에 웁니다.'},
+  {fr:'Ver',phon:'[vɛʁ]',ko:'벌레',type:'명사',sentFr:'Le ver est dans la terre.',sentKo:'벌레가 땅 속에 있습니다.'},
+  {fr:'Escargot',phon:'[ɛskaʁɡo]',ko:'달팽이',type:'명사',sentFr:'L\'escargot est lent.',sentKo:'달팽이는 느립니다.'},
+  {fr:'Porc',phon:'[pɔʁk]',ko:'돼지고기',type:'명사',sentFr:'Je ne mange pas de porc.',sentKo:'저는 돼지고기를 먹지 않습니다.'},
+  {fr:'Fennec',phon:'[fɛnɛk]',ko:'사막여우',type:'명사',sentFr:'Le fennec a de grandes oreilles.',sentKo:'사막여우는 귀가 큽니다.'},
+  {fr:'Gorille',phon:'[ɡɔʁij]',ko:'고릴라',type:'명사',sentFr:'Le gorille est fort.',sentKo:'고릴라는 힘이 셉니다.'},
+],
+nature: [
+  {fr:'Soleil',phon:'[sɔlɛj]',ko:'태양',type:'명사',sentFr:'Le soleil brille aujourd\'hui.',sentKo:'오늘 태양이 빛납니다.'},
+  {fr:'Lune',phon:'[lyn]',ko:'달',type:'명사',sentFr:'La lune est pleine ce soir.',sentKo:'오늘 밤 보름달입니다.'},
+  {fr:'Étoile',phon:'[etwal]',ko:'별',type:'명사',sentFr:'Les étoiles brillent la nuit.',sentKo:'별들이 밤에 빛납니다.'},
+  {fr:'Ciel',phon:'[sjɛl]',ko:'하늘',type:'명사',sentFr:'Le ciel est bleu.',sentKo:'하늘이 파랗습니다.'},
+  {fr:'Nuage',phon:'[nɥaʒ]',ko:'구름',type:'명사',sentFr:'Les nuages sont gris.',sentKo:'구름이 회색입니다.'},
+  {fr:'Pluie',phon:'[plɥi]',ko:'비',type:'명사',sentFr:'Il pleut aujourd\'hui.',sentKo:'오늘 비가 옵니다.'},
+  {fr:'Vent',phon:'[vɑ̃]',ko:'바람',type:'명사',sentFr:'Le vent est fort.',sentKo:'바람이 셉니다.'},
+  {fr:'Neige',phon:'[nɛʒ]',ko:'눈',type:'명사',sentFr:'La neige est blanche.',sentKo:'눈은 하얗습니다.'},
+  {fr:'Foudre',phon:'[fudʁ]',ko:'번개',type:'명사',sentFr:'La foudre est dangereuse.',sentKo:'번개는 위험합니다.'},
+  {fr:'Arc-en-ciel',phon:'[aʁkɑ̃sjɛl]',ko:'무지개',type:'명사',sentFr:'Regardez l\'arc-en-ciel!',sentKo:'무지개를 보세요!'},
+  {fr:'Montagne',phon:'[mɔ̃taɲ]',ko:'산',type:'명사',sentFr:'La montagne est haute.',sentKo:'산이 높습니다.'},
+  {fr:'Colline',phon:'[kɔlin]',ko:'언덕',type:'명사',sentFr:'La colline est verte.',sentKo:'언덕이 초록색입니다.'},
+  {fr:'Vallée',phon:'[vale]',ko:'계곡',type:'명사',sentFr:'La vallée est profonde.',sentKo:'계곡이 깊습니다.'},
+  {fr:'Forêt',phon:'[fɔʁɛ]',ko:'숲',type:'명사',sentFr:'La forêt est dense.',sentKo:'숲이 빽빽합니다.'},
+  {fr:'Rivière',phon:'[ʁivjɛʁ]',ko:'강',type:'명사',sentFr:'La rivière coule vite.',sentKo:'강이 빠르게 흐릅니다.'},
+  {fr:'Lac',phon:'[lak]',ko:'호수',type:'명사',sentFr:'Le lac est calme.',sentKo:'호수가 고요합니다.'},
+  {fr:'Mer',phon:'[mɛʁ]',ko:'바다',type:'명사',sentFr:'La mer est bleue.',sentKo:'바다는 파랗습니다.'},
+  {fr:'Plage',phon:'[plaʒ]',ko:'해변',type:'명사',sentFr:'La plage est belle.',sentKo:'해변이 아름답습니다.'},
+  {fr:'Île',phon:'[il]',ko:'섬',type:'명사',sentFr:'L\'île est paradisiaque.',sentKo:'섬은 천국 같습니다.'},
+  {fr:'Désert',phon:'[dezɛʁ]',ko:'사막',type:'명사',sentFr:'Le désert est chaud et sec.',sentKo:'사막은 덥고 건조합니다.'},
+  {fr:'Arbre',phon:'[aʁbʁ]',ko:'나무',type:'명사',sentFr:'L\'arbre est grand.',sentKo:'나무가 큽니다.'},
+  {fr:'Fleur',phon:'[flœʁ]',ko:'꽃',type:'명사',sentFr:'La fleur est belle.',sentKo:'꽃이 아름답습니다.'},
+  {fr:'Herbe',phon:'[ɛʁb]',ko:'풀',type:'명사',sentFr:'L\'herbe est verte.',sentKo:'풀이 초록색입니다.'},
+  {fr:'Feuille',phon:'[fœj]',ko:'잎',type:'명사',sentFr:'Les feuilles tombent en automne.',sentKo:'잎이 가을에 떨어집니다.'},
+  {fr:'Racine',phon:'[ʁasin]',ko:'뿌리',type:'명사',sentFr:'Les racines sont profondes.',sentKo:'뿌리가 깊습니다.'},
+  {fr:'Pierre',phon:'[pjɛʁ]',ko:'돌',type:'명사',sentFr:'La pierre est dure.',sentKo:'돌은 단단합니다.'},
+  {fr:'Sable',phon:'[sabl]',ko:'모래',type:'명사',sentFr:'Le sable est chaud.',sentKo:'모래가 뜨겁습니다.'},
+  {fr:'Terre',phon:'[tɛʁ]',ko:'땅',type:'명사',sentFr:'La terre est fertile.',sentKo:'땅이 비옥합니다.'},
+  {fr:'Volcan',phon:'[vɔlkɑ̃]',ko:'화산',type:'명사',sentFr:'Le volcan est actif.',sentKo:'화산이 활동 중입니다.'},
+  {fr:'Glacier',phon:'[ɡlasje]',ko:'빙하',type:'명사',sentFr:'Le glacier fond.',sentKo:'빙하가 녹고 있습니다.'},
+  {fr:'Printemps',phon:'[pʁɛ̃tɑ̃]',ko:'봄',type:'명사',sentFr:'Le printemps est ma saison préférée.',sentKo:'봄은 내가 가장 좋아하는 계절입니다.'},
+  {fr:'Été',phon:'[ete]',ko:'여름',type:'명사',sentFr:'L\'été est chaud.',sentKo:'여름은 덥습니다.'},
+  {fr:'Automne',phon:'[otɔn]',ko:'가을',type:'명사',sentFr:'L\'automne est coloré.',sentKo:'가을은 화려합니다.'},
+  {fr:'Hiver',phon:'[ivɛʁ]',ko:'겨울',type:'명사',sentFr:'L\'hiver est froid.',sentKo:'겨울은 춥습니다.'},
+  {fr:'Paysage',phon:'[pɛizaʒ]',ko:'풍경',type:'명사',sentFr:'Le paysage est magnifique.',sentKo:'풍경이 아름답습니다.'},
+  {fr:'Horizon',phon:'[ɔʁizɔ̃]',ko:'지평선',type:'명사',sentFr:'L\'horizon est loin.',sentKo:'지평선이 멀리 있습니다.'},
+  {fr:'Cascade',phon:'[kaskad]',ko:'폭포',type:'명사',sentFr:'La cascade est impressionnante.',sentKo:'폭포가 인상적입니다.'},
+  {fr:'Grotte',phon:'[ɡʁɔt]',ko:'동굴',type:'명사',sentFr:'La grotte est sombre.',sentKo:'동굴이 어둡습니다.'},
+  {fr:'Prairie',phon:'[pʁɛʁi]',ko:'초원',type:'명사',sentFr:'La prairie est vaste.',sentKo:'초원이 광활합니다.'},
+  {fr:'Marais',phon:'[maʁɛ]',ko:'습지',type:'명사',sentFr:'Le marais est humide.',sentKo:'습지는 축축합니다.'},
+  {fr:'Récif',phon:'[ʁesif]',ko:'암초',type:'명사',sentFr:'Le récif est coloré.',sentKo:'암초가 색색입니다.'},
+  {fr:'Dune',phon:'[dyn]',ko:'모래언덕',type:'명사',sentFr:'La dune est haute.',sentKo:'모래언덕이 높습니다.'},
+  {fr:'Torrent',phon:'[tɔʁɑ̃]',ko:'급류',type:'명사',sentFr:'Le torrent est rapide.',sentKo:'급류가 빠릅니다.'},
+  {fr:'Oasis',phon:'[oazis]',ko:'오아시스',type:'명사',sentFr:'L\'oasis est au milieu du désert.',sentKo:'오아시스가 사막 한가운데 있습니다.'},
+  {fr:'Lande',phon:'[lɑ̃d]',ko:'황야',type:'명사',sentFr:'La lande est sauvage.',sentKo:'황야는 야생입니다.'},
+  {fr:'Falaise',phon:'[falɛz]',ko:'절벽',type:'명사',sentFr:'La falaise est haute.',sentKo:'절벽이 높습니다.'},
+  {fr:'Aurore',phon:'[ɔʁɔʁ]',ko:'새벽빛',type:'명사',sentFr:'L\'aurore est magnifique.',sentKo:'새벽빛이 아름답습니다.'},
+  {fr:'Coucher de soleil',phon:'[kuʃe də sɔlɛj]',ko:'일몰',type:'명사',sentFr:'Le coucher de soleil est rouge.',sentKo:'일몰이 붉습니다.'},
+  {fr:'Lever du soleil',phon:'[ləve dy sɔlɛj]',ko:'일출',type:'명사',sentFr:'Le lever du soleil est beau.',sentKo:'일출이 아름답습니다.'},
+  {fr:'Brouillard',phon:'[bʁujaʁ]',ko:'안개',type:'명사',sentFr:'Le brouillard est dense.',sentKo:'안개가 짙습니다.'},
+],
+school: [
+  {fr:'École',phon:'[ekɔl]',ko:'학교',type:'명사',sentFr:'Je vais à l\'école.',sentKo:'저는 학교에 갑니다.'},
+  {fr:'Classe',phon:'[klas]',ko:'교실',type:'명사',sentFr:'La classe est grande.',sentKo:'교실이 큽니다.'},
+  {fr:'Professeur',phon:'[pʁɔfɛsœʁ]',ko:'선생님',type:'명사',sentFr:'Le professeur explique la leçon.',sentKo:'선생님이 수업을 설명합니다.'},
+  {fr:'Élève',phon:'[elɛv]',ko:'학생',type:'명사',sentFr:'L\'élève étudie.',sentKo:'학생이 공부합니다.'},
+  {fr:'Livre',phon:'[livʁ]',ko:'책',type:'명사',sentFr:'Le livre est intéressant.',sentKo:'책이 흥미롭습니다.'},
+  {fr:'Cahier',phon:'[kaje]',ko:'공책',type:'명사',sentFr:'J\'écris dans mon cahier.',sentKo:'공책에 씁니다.'},
+  {fr:'Stylo',phon:'[stilo]',ko:'펜',type:'명사',sentFr:'Prête-moi ton stylo.',sentKo:'펜을 빌려주세요.'},
+  {fr:'Crayon',phon:'[kʁɛjɔ̃]',ko:'연필',type:'명사',sentFr:'J\'utilise un crayon.',sentKo:'연필을 사용합니다.'},
+  {fr:'Règle',phon:'[ʁɛɡl]',ko:'자',type:'명사',sentFr:'La règle mesure 30 cm.',sentKo:'자가 30cm입니다.'},
+  {fr:'Gomme',phon:'[ɡɔm]',ko:'지우개',type:'명사',sentFr:'Donne-moi la gomme.',sentKo:'지우개를 주세요.'},
+  {fr:'Tableau',phon:'[tablo]',ko:'칠판',type:'명사',sentFr:'Le professeur écrit au tableau.',sentKo:'선생님이 칠판에 씁니다.'},
+  {fr:'Bibliothèque',phon:'[biblijɔtɛk]',ko:'도서관',type:'명사',sentFr:'J\'aime la bibliothèque.',sentKo:'저는 도서관을 좋아합니다.'},
+  {fr:'Mathématiques',phon:'[matematik]',ko:'수학',type:'명사',sentFr:'Les mathématiques sont difficiles.',sentKo:'수학은 어렵습니다.'},
+  {fr:'Science',phon:'[sjɑ̃s]',ko:'과학',type:'명사',sentFr:'J\'aime la science.',sentKo:'저는 과학을 좋아합니다.'},
+  {fr:'Histoire',phon:'[istwaʁ]',ko:'역사',type:'명사',sentFr:'L\'histoire est fascinante.',sentKo:'역사는 매력적입니다.'},
+  {fr:'Géographie',phon:'[ʒeɔɡʁafi]',ko:'지리',type:'명사',sentFr:'Nous étudions la géographie.',sentKo:'지리를 공부합니다.'},
+  {fr:'Art',phon:'[aʁ]',ko:'미술',type:'명사',sentFr:'J\'aime l\'art.',sentKo:'저는 미술을 좋아합니다.'},
+  {fr:'Musique',phon:'[myzik]',ko:'음악',type:'명사',sentFr:'La musique est belle.',sentKo:'음악이 아름답습니다.'},
+  {fr:'Sport',phon:'[spɔʁ]',ko:'체육',type:'명사',sentFr:'J\'aime le sport.',sentKo:'저는 체육을 좋아합니다.'},
+  {fr:'Devoir',phon:'[dəvwaʁ]',ko:'숙제',type:'명사',sentFr:'J\'ai beaucoup de devoirs.',sentKo:'숙제가 많습니다.'},
+  {fr:'Examen',phon:'[ɛɡzamɛ̃]',ko:'시험',type:'명사',sentFr:'L\'examen est demain.',sentKo:'시험이 내일입니다.'},
+  {fr:'Note',phon:'[nɔt]',ko:'점수',type:'명사',sentFr:'J\'ai eu une bonne note.',sentKo:'좋은 점수를 받았습니다.'},
+  {fr:'Cour',phon:'[kuʁ]',ko:'운동장',type:'명사',sentFr:'Les enfants jouent dans la cour.',sentKo:'아이들이 운동장에서 놉니다.'},
+  {fr:'Cartable',phon:'[kaʁtabl]',ko:'책가방',type:'명사',sentFr:'Mon cartable est lourd.',sentKo:'책가방이 무겁습니다.'},
+  {fr:'Université',phon:'[ynivɛʁsite]',ko:'대학교',type:'명사',sentFr:'Je suis étudiant à l\'université.',sentKo:'저는 대학생입니다.'},
+  {fr:'Lycée',phon:'[lise]',ko:'고등학교',type:'명사',sentFr:'Il est au lycée.',sentKo:'그는 고등학생입니다.'},
+  {fr:'Récréation',phon:'[ʁekʁeasjɔ̃]',ko:'쉬는 시간',type:'명사',sentFr:'J\'attends la récréation.',sentKo:'쉬는 시간을 기다립니다.'},
+  {fr:'Cours',phon:'[kuʁ]',ko:'수업',type:'명사',sentFr:'Le cours commence à 8h.',sentKo:'수업이 8시에 시작합니다.'},
+  {fr:'Leçon',phon:'[ləsɔ̃]',ko:'레슨',type:'명사',sentFr:'La leçon est intéressante.',sentKo:'레슨이 흥미롭습니다.'},
+  {fr:'Diplôme',phon:'[diplom]',ko:'학위',type:'명사',sentFr:'J\'ai obtenu mon diplôme.',sentKo:'학위를 받았습니다.'},
+  {fr:'Étudier',phon:'[etydje]',ko:'공부하다',type:'동사',sentFr:'J\'étudie le français.',sentKo:'저는 프랑스어를 공부합니다.'},
+  {fr:'Apprendre',phon:'[apʁɑ̃dʁ]',ko:'배우다',type:'동사',sentFr:'J\'apprends une nouvelle langue.',sentKo:'새로운 언어를 배웁니다.'},
+  {fr:'Enseigner',phon:'[ɑ̃sɛɲe]',ko:'가르치다',type:'동사',sentFr:'Il enseigne les maths.',sentKo:'그는 수학을 가르칩니다.'},
+  {fr:'Lire',phon:'[liʁ]',ko:'읽다',type:'동사',sentFr:'J\'aime lire des livres.',sentKo:'저는 책 읽기를 좋아합니다.'},
+  {fr:'Écrire',phon:'[ekʁiʁ]',ko:'쓰다',type:'동사',sentFr:'J\'écris une lettre.',sentKo:'편지를 씁니다.'},
+  {fr:'Calculer',phon:'[kalkyle]',ko:'계산하다',type:'동사',sentFr:'Je calcule la somme.',sentKo:'합계를 계산합니다.'},
+  {fr:'Dessiner',phon:'[desine]',ko:'그리다',type:'동사',sentFr:'J\'aime dessiner.',sentKo:'저는 그림 그리기를 좋아합니다.'},
+  {fr:'Comprendre',phon:'[kɔ̃pʁɑ̃dʁ]',ko:'이해하다',type:'동사',sentFr:'Je comprends la question.',sentKo:'질문을 이해합니다.'},
+  {fr:'Répondre',phon:'[ʁepɔ̃dʁ]',ko:'대답하다',type:'동사',sentFr:'Il répond à la question.',sentKo:'그가 질문에 대답합니다.'},
+  {fr:'Poser',phon:'[poze]',ko:'묻다',type:'동사',sentFr:'Elle pose une question.',sentKo:'그녀가 질문을 합니다.'},
+  {fr:'Répéter',phon:'[ʁepete]',ko:'반복하다',type:'동사',sentFr:'Répétez après moi.',sentKo:'저를 따라 반복하세요.'},
+  {fr:'Mémoriser',phon:'[memɔʁize]',ko:'외우다',type:'동사',sentFr:'Je mémorise le vocabulaire.',sentKo:'어휘를 외웁니다.'},
+  {fr:'Exercice',phon:'[ɛɡzɛʁsis]',ko:'연습',type:'명사',sentFr:'Faites l\'exercice.',sentKo:'연습을 하세요.'},
+  {fr:'Vocabulaire',phon:'[vɔkabylɛʁ]',ko:'어휘',type:'명사',sentFr:'J\'étudie le vocabulaire.',sentKo:'어휘를 공부합니다.'},
+  {fr:'Grammaire',phon:'[ɡʁamɛʁ]',ko:'문법',type:'명사',sentFr:'La grammaire est importante.',sentKo:'문법이 중요합니다.'},
+  {fr:'Dictionnaire',phon:'[diksjɔnɛʁ]',ko:'사전',type:'명사',sentFr:'J\'utilise un dictionnaire.',sentKo:'사전을 사용합니다.'},
+  {fr:'Langue',phon:'[lɑ̃ɡ]',ko:'언어',type:'명사',sentFr:'Le français est une belle langue.',sentKo:'프랑스어는 아름다운 언어입니다.'},
+  {fr:'Traduction',phon:'[tʁadyksjɔ̃]',ko:'번역',type:'명사',sentFr:'La traduction est utile.',sentKo:'번역이 유용합니다.'},
+  {fr:'Accent',phon:'[aksɑ̃]',ko:'억양',type:'명사',sentFr:'L\'accent français est beau.',sentKo:'프랑스어 억양이 아름답습니다.'},
+  {fr:'Prononciation',phon:'[pʁɔnɔ̃sjasjɔ̃]',ko:'발음',type:'명사',sentFr:'La prononciation est difficile.',sentKo:'발음이 어렵습니다.'},
+],
+travel: [
+  {fr:'Aéroport',phon:'[aeʁɔpɔʁ]',ko:'공항',type:'명사',sentFr:'Nous arrivons à l\'aéroport.',sentKo:'우리는 공항에 도착합니다.'},
+  {fr:'Avion',phon:'[avjɔ̃]',ko:'비행기',type:'명사',sentFr:'L\'avion part à 10h.',sentKo:'비행기가 10시에 떠납니다.'},
+  {fr:'Train',phon:'[tʁɛ̃]',ko:'기차',type:'명사',sentFr:'Le train est en retard.',sentKo:'기차가 늦었습니다.'},
+  {fr:'Gare',phon:'[ɡaʁ]',ko:'기차역',type:'명사',sentFr:'La gare est grande.',sentKo:'기차역이 큽니다.'},
+  {fr:'Bus',phon:'[bys]',ko:'버스',type:'명사',sentFr:'Je prends le bus.',sentKo:'저는 버스를 탑니다.'},
+  {fr:'Métro',phon:'[metʁo]',ko:'지하철',type:'명사',sentFr:'Le métro est rapide.',sentKo:'지하철이 빠릅니다.'},
+  {fr:'Voiture',phon:'[vwatyʁ]',ko:'자동차',type:'명사',sentFr:'J\'ai une voiture rouge.',sentKo:'저는 빨간 차가 있습니다.'},
+  {fr:'Taxi',phon:'[taksi]',ko:'택시',type:'명사',sentFr:'Appelez un taxi.',sentKo:'택시를 불러주세요.'},
+  {fr:'Vélo',phon:'[velo]',ko:'자전거',type:'명사',sentFr:'Je fais du vélo.',sentKo:'자전거를 탑니다.'},
+  {fr:'Bateau',phon:'[bato]',ko:'배',type:'명사',sentFr:'Le bateau part demain.',sentKo:'배가 내일 출발합니다.'},
+  {fr:'Hôtel',phon:'[otɛl]',ko:'호텔',type:'명사',sentFr:'L\'hôtel est confortable.',sentKo:'호텔이 편안합니다.'},
+  {fr:'Chambre',phon:'[ʃɑ̃bʁ]',ko:'객실',type:'명사',sentFr:'La chambre donne sur la mer.',sentKo:'객실이 바다를 향합니다.'},
+  {fr:'Réservation',phon:'[ʁezɛʁvasjɔ̃]',ko:'예약',type:'명사',sentFr:'J\'ai une réservation.',sentKo:'예약이 있습니다.'},
+  {fr:'Passeport',phon:'[paspɔʁ]',ko:'여권',type:'명사',sentFr:'Montrez votre passeport.',sentKo:'여권을 보여주세요.'},
+  {fr:'Visa',phon:'[viza]',ko:'비자',type:'명사',sentFr:'J\'ai un visa.',sentKo:'비자가 있습니다.'},
+  {fr:'Valise',phon:'[valizis]',ko:'여행 가방',type:'명사',sentFr:'Ma valise est lourde.',sentKo:'여행 가방이 무겁습니다.'},
+  {fr:'Carte',phon:'[kaʁt]',ko:'지도',type:'명사',sentFr:'Regardez la carte.',sentKo:'지도를 보세요.'},
+  {fr:'Touriste',phon:'[tuʁist]',ko:'관광객',type:'명사',sentFr:'Il y a beaucoup de touristes.',sentKo:'관광객이 많습니다.'},
+  {fr:'Voyage',phon:'[vwajaʒ]',ko:'여행',type:'명사',sentFr:'Le voyage est long.',sentKo:'여행이 깁니다.'},
+  {fr:'Destination',phon:'[dɛstinasjɔ̃]',ko:'목적지',type:'명사',sentFr:'Notre destination est Paris.',sentKo:'우리의 목적지는 파리입니다.'},
+  {fr:'Billet',phon:'[bijɛ]',ko:'표',type:'명사',sentFr:'J\'ai acheté un billet.',sentKo:'표를 샀습니다.'},
+  {fr:'Douane',phon:'[dwan]',ko:'세관',type:'명사',sentFr:'Passez par la douane.',sentKo:'세관을 통과하세요.'},
+  {fr:'Office de tourisme',phon:'[ɔfis də tuʁism]',ko:'관광 안내소',type:'명사',sentFr:'L\'office de tourisme est utile.',sentKo:'관광 안내소가 유용합니다.'},
+  {fr:'Monument',phon:'[mɔnymɑ̃]',ko:'기념물',type:'명사',sentFr:'Le monument est historique.',sentKo:'기념물이 역사적입니다.'},
+  {fr:'Musée',phon:'[myze]',ko:'박물관',type:'명사',sentFr:'Le musée est ouvert.',sentKo:'박물관이 열려 있습니다.'},
+  {fr:'Église',phon:'[eɡliz]',ko:'교회',type:'명사',sentFr:'L\'église est ancienne.',sentKo:'교회가 오래됐습니다.'},
+  {fr:'Château',phon:'[ʃɑto]',ko:'성',type:'명사',sentFr:'Le château est magnifique.',sentKo:'성이 멋집니다.'},
+  {fr:'Tour Eiffel',phon:'[tuʁ ɛfɛl]',ko:'에펠탑',type:'명사',sentFr:'La Tour Eiffel est à Paris.',sentKo:'에펠탑은 파리에 있습니다.'},
+  {fr:'Photo',phon:'[foto]',ko:'사진',type:'명사',sentFr:'Je prends une photo.',sentKo:'사진을 찍습니다.'},
+  {fr:'Souvenir',phon:'[suvniʁ]',ko:'기념품',type:'명사',sentFr:'J\'achète un souvenir.',sentKo:'기념품을 삽니다.'},
+  {fr:'Arriver',phon:'[aʁive]',ko:'도착하다',type:'동사',sentFr:'Nous arrivons demain.',sentKo:'우리는 내일 도착합니다.'},
+  {fr:'Partir',phon:'[paʁtiʁ]',ko:'출발하다',type:'동사',sentFr:'Le train part à 9h.',sentKo:'기차가 9시에 출발합니다.'},
+  {fr:'Voyager',phon:'[vwajaʒe]',ko:'여행하다',type:'동사',sentFr:'J\'aime voyager.',sentKo:'여행하기를 좋아합니다.'},
+  {fr:'Visiter',phon:'[vizite]',ko:'방문하다',type:'동사',sentFr:'Je veux visiter Paris.',sentKo:'파리를 방문하고 싶습니다.'},
+  {fr:'Réserver',phon:'[ʁezɛʁve]',ko:'예약하다',type:'동사',sentFr:'Je réserve une chambre.',sentKo:'방을 예약합니다.'},
+  {fr:'Louer',phon:'[lwe]',ko:'빌리다',type:'동사',sentFr:'Je loue une voiture.',sentKo:'차를 빌립니다.'},
+  {fr:'Perdre',phon:'[pɛʁdʁ]',ko:'잃다',type:'동사',sentFr:'Je suis perdu.',sentKo:'길을 잃었습니다.'},
+  {fr:'Trouver',phon:'[tʁuve]',ko:'찾다',type:'동사',sentFr:'Trouvez l\'hôtel.',sentKo:'호텔을 찾으세요.'},
+  {fr:'Direction',phon:'[diʁɛksjɔ̃]',ko:'방향',type:'명사',sentFr:'Dans quelle direction?',sentKo:'어느 방향으로?'},
+  {fr:'Gauche',phon:'[ɡoʃ]',ko:'왼쪽',type:'명사',sentFr:'Tournez à gauche.',sentKo:'왼쪽으로 돌아요.'},
+  {fr:'Droite',phon:'[dʁwat]',ko:'오른쪽',type:'명사',sentFr:'Tournez à droite.',sentKo:'오른쪽으로 돌아요.'},
+  {fr:'Tout droit',phon:'[tu dʁwa]',ko:'직진',type:'부사',sentFr:'Allez tout droit.',sentKo:'직진하세요.'},
+  {fr:'Loin',phon:'[lwɛ̃]',ko:'멀리',type:'부사',sentFr:'C\'est loin d\'ici.',sentKo:'여기서 멀습니다.'},
+  {fr:'Près',phon:'[pʁɛ]',ko:'가까이',type:'부사',sentFr:'C\'est tout près.',sentKo:'바로 가까이 있습니다.'},
+  {fr:'Frontière',phon:'[fʁɔ̃tjɛʁ]',ko:'국경',type:'명사',sentFr:'La frontière est close.',sentKo:'국경이 닫혀 있습니다.'},
+  {fr:'Ambassade',phon:'[ɑ̃basad]',ko:'대사관',type:'명사',sentFr:'L\'ambassade est ouverte.',sentKo:'대사관이 열려 있습니다.'},
+  {fr:'Assurance',phon:'[asyʁɑ̃s]',ko:'보험',type:'명사',sentFr:'J\'ai une assurance voyage.',sentKo:'여행 보험이 있습니다.'},
+  {fr:'Décollage',phon:'[dekɔlaʒ]',ko:'이륙',type:'명사',sentFr:'Le décollage est dans 30 minutes.',sentKo:'이륙이 30분 후입니다.'},
+  {fr:'Atterrissage',phon:'[atɛʁisaʒ]',ko:'착륙',type:'명사',sentFr:'L\'atterrissage est smooth.',sentKo:'착륙이 부드럽습니다.'},
+  {fr:'Escale',phon:'[ɛskal]',ko:'경유',type:'명사',sentFr:'J\'ai une escale à Dubaï.',sentKo:'두바이에서 경유합니다.'},
+],
+body: [
+  {fr:'Tête',phon:'[tɛt]',ko:'머리',type:'명사',sentFr:'J\'ai mal à la tête.',sentKo:'머리가 아픕니다.'},
+  {fr:'Visage',phon:'[vizaʒ]',ko:'얼굴',type:'명사',sentFr:'Elle a un beau visage.',sentKo:'그녀는 아름다운 얼굴을 가졌습니다.'},
+  {fr:'Œil',phon:'[œj]',ko:'눈',type:'명사',sentFr:'Ses yeux sont bleus.',sentKo:'그의 눈은 파랍니다.'},
+  {fr:'Nez',phon:'[ne]',ko:'코',type:'명사',sentFr:'Il a un petit nez.',sentKo:'그는 작은 코를 가졌습니다.'},
+  {fr:'Bouche',phon:'[buʃ]',ko:'입',type:'명사',sentFr:'Elle a une belle bouche.',sentKo:'그녀는 아름다운 입을 가졌습니다.'},
+  {fr:'Oreille',phon:'[ɔʁɛj]',ko:'귀',type:'명사',sentFr:'Il a de grandes oreilles.',sentKo:'그는 큰 귀를 가졌습니다.'},
+  {fr:'Cheveux',phon:'[ʃəvø]',ko:'머리카락',type:'명사',sentFr:'Ses cheveux sont longs.',sentKo:'그녀의 머리카락이 깁니다.'},
+  {fr:'Cou',phon:'[ku]',ko:'목',type:'명사',sentFr:'Elle a un long cou.',sentKo:'그녀는 긴 목을 가졌습니다.'},
+  {fr:'Épaule',phon:'[epol]',ko:'어깨',type:'명사',sentFr:'Il a les épaules larges.',sentKo:'그는 어깨가 넓습니다.'},
+  {fr:'Bras',phon:'[bʁa]',ko:'팔',type:'명사',sentFr:'J\'ai mal au bras.',sentKo:'팔이 아픕니다.'},
+  {fr:'Main',phon:'[mɛ̃]',ko:'손',type:'명사',sentFr:'Elle a de belles mains.',sentKo:'그녀는 아름다운 손을 가졌습니다.'},
+  {fr:'Doigt',phon:'[dwa]',ko:'손가락',type:'명사',sentFr:'Je me suis coupé le doigt.',sentKo:'손가락을 베었습니다.'},
+  {fr:'Poitrine',phon:'[pwatʁin]',ko:'가슴',type:'명사',sentFr:'La poitrine est la cage thoracique.',sentKo:'가슴은 흉부입니다.'},
+  {fr:'Dos',phon:'[do]',ko:'등',type:'명사',sentFr:'J\'ai mal au dos.',sentKo:'등이 아픕니다.'},
+  {fr:'Ventre',phon:'[vɑ̃tʁ]',ko:'배',type:'명사',sentFr:'J\'ai mal au ventre.',sentKo:'배가 아픕니다.'},
+  {fr:'Jambe',phon:'[ʒɑ̃b]',ko:'다리',type:'명사',sentFr:'Ses jambes sont longues.',sentKo:'다리가 깁니다.'},
+  {fr:'Pied',phon:'[pje]',ko:'발',type:'명사',sentFr:'J\'ai mal aux pieds.',sentKo:'발이 아픕니다.'},
+  {fr:'Genou',phon:'[ʒənu]',ko:'무릎',type:'명사',sentFr:'Il s\'est blessé au genou.',sentKo:'무릎을 다쳤습니다.'},
+  {fr:'Cœur',phon:'[kœʁ]',ko:'심장',type:'명사',sentFr:'Mon cœur bat vite.',sentKo:'심장이 빨리 뜁니다.'},
+  {fr:'Poumon',phon:'[pumɔ̃]',ko:'폐',type:'명사',sentFr:'Les poumons respirent l\'air.',sentKo:'폐는 공기를 호흡합니다.'},
+  {fr:'Dent',phon:'[dɑ̃]',ko:'이',type:'명사',sentFr:'J\'ai mal aux dents.',sentKo:'이가 아픕니다.'},
+  {fr:'Langue',phon:'[lɑ̃ɡ]',ko:'혀',type:'명사',sentFr:'La langue est sensible.',sentKo:'혀가 민감합니다.'},
+  {fr:'Gorge',phon:'[ɡɔʁʒ]',ko:'목구멍',type:'명사',sentFr:'J\'ai mal à la gorge.',sentKo:'목이 아픕니다.'},
+  {fr:'Estomac',phon:'[ɛstɔma]',ko:'위',type:'명사',sentFr:'J\'ai une douleur à l\'estomac.',sentKo:'위가 아픕니다.'},
+  {fr:'Médecin',phon:'[medsɛ̃]',ko:'의사',type:'명사',sentFr:'Le médecin examine le patient.',sentKo:'의사가 환자를 진찰합니다.'},
+  {fr:'Hôpital',phon:'[opital]',ko:'병원',type:'명사',sentFr:'Je vais à l\'hôpital.',sentKo:'병원에 갑니다.'},
+  {fr:'Médicament',phon:'[medikamɑ̃]',ko:'약',type:'명사',sentFr:'Prenez ce médicament.',sentKo:'이 약을 드세요.'},
+  {fr:'Maladie',phon:'[maladi]',ko:'병',type:'명사',sentFr:'Il a une maladie grave.',sentKo:'그는 심각한 병이 있습니다.'},
+  {fr:'Fièvre',phon:'[fjɛvʁ]',ko:'열',type:'명사',sentFr:'J\'ai de la fièvre.',sentKo:'열이 있습니다.'},
+  {fr:'Toux',phon:'[tu]',ko:'기침',type:'명사',sentFr:'J\'ai une toux.',sentKo:'기침이 납니다.'},
+  {fr:'Rhume',phon:'[ʁym]',ko:'감기',type:'명사',sentFr:'J\'ai un rhume.',sentKo:'감기에 걸렸습니다.'},
+  {fr:'Grippe',phon:'[ɡʁip]',ko:'독감',type:'명사',sentFr:'La grippe est contagieuse.',sentKo:'독감은 전염됩니다.'},
+  {fr:'Allergie',phon:'[alɛʁʒi]',ko:'알레르기',type:'명사',sentFr:'J\'ai une allergie.',sentKo:'알레르기가 있습니다.'},
+  {fr:'Blessure',phon:'[blɛsyʁ]',ko:'부상',type:'명사',sentFr:'Il a une blessure grave.',sentKo:'심각한 부상이 있습니다.'},
+  {fr:'Repos',phon:'[ʁəpo]',ko:'휴식',type:'명사',sentFr:'J\'ai besoin de repos.',sentKo:'휴식이 필요합니다.'},
+  {fr:'Fatigue',phon:'[fatiɡ]',ko:'피로',type:'명사',sentFr:'Je ressens de la fatigue.',sentKo:'피로를 느낍니다.'},
+  {fr:'Santé',phon:'[sɑ̃te]',ko:'건강',type:'명사',sentFr:'La santé est précieuse.',sentKo:'건강이 소중합니다.'},
+  {fr:'Exercice',phon:'[ɛɡzɛʁsis]',ko:'운동',type:'명사',sentFr:'Je fais de l\'exercice.',sentKo:'운동을 합니다.'},
+  {fr:'Régime',phon:'[ʁeʒim]',ko:'다이어트',type:'명사',sentFr:'Je fais un régime.',sentKo:'다이어트를 합니다.'},
+  {fr:'Opération',phon:'[ɔpeʁasjɔ̃]',ko:'수술',type:'명사',sentFr:'L\'opération a réussi.',sentKo:'수술이 성공했습니다.'},
+  {fr:'Pharmacie',phon:'[faʁmasi]',ko:'약국',type:'명사',sentFr:'La pharmacie est ouverte.',sentKo:'약국이 열려 있습니다.'},
+  {fr:'Ambulance',phon:'[ɑ̃bylɑ̃s]',ko:'구급차',type:'명사',sentFr:'Appelez l\'ambulance!',sentKo:'구급차를 불러주세요!'},
+  {fr:'Urgences',phon:'[yʁʒɑ̃s]',ko:'응급실',type:'명사',sentFr:'Je vais aux urgences.',sentKo:'응급실에 갑니다.'},
+  {fr:'Douleur',phon:'[dulœʁ]',ko:'통증',type:'명사',sentFr:'J\'ai une douleur.',sentKo:'통증이 있습니다.'},
+  {fr:'Guérir',phon:'[ɡeʁiʁ]',ko:'낫다',type:'동사',sentFr:'Je veux guérir vite.',sentKo:'빨리 낫고 싶습니다.'},
+  {fr:'Respirer',phon:'[ʁɛspiʁe]',ko:'숨쉬다',type:'동사',sentFr:'Respirez profondément.',sentKo:'깊게 숨을 쉬세요.'},
+  {fr:'Dormir',phon:'[dɔʁmiʁ]',ko:'자다',type:'동사',sentFr:'Je dois dormir.',sentKo:'저는 자야 합니다.'},
+  {fr:'Manger',phon:'[mɑ̃ʒe]',ko:'먹다',type:'동사',sentFr:'Mangez équilibré.',sentKo:'균형 잡힌 식사를 하세요.'},
+  {fr:'Bouger',phon:'[buʒe]',ko:'움직이다',type:'동사',sentFr:'Bougez régulièrement.',sentKo:'규칙적으로 움직이세요.'},
+  {fr:'Souffrir',phon:'[sufʁiʁ]',ko:'고통받다',type:'동사',sentFr:'Il souffre beaucoup.',sentKo:'그는 많이 고통받습니다.'},
+],
+number: [
+  {fr:'Zéro',phon:'[zeʁo]',ko:'0',type:'숫자',sentFr:'Zéro est le début.',sentKo:'0이 시작입니다.'},
+  {fr:'Un',phon:'[ɛ̃]',ko:'1',type:'숫자',sentFr:'Un café, s\'il vous plaît.',sentKo:'커피 한 잔 부탁합니다.'},
+  {fr:'Deux',phon:'[dø]',ko:'2',type:'숫자',sentFr:'J\'ai deux sœurs.',sentKo:'저는 여동생이 둘 있습니다.'},
+  {fr:'Trois',phon:'[tʁwa]',ko:'3',type:'숫자',sentFr:'Trois pommes.',sentKo:'사과 세 개.'},
+  {fr:'Quatre',phon:'[katʁ]',ko:'4',type:'숫자',sentFr:'Quatre saisons.',sentKo:'사계절.'},
+  {fr:'Cinq',phon:'[sɛ̃k]',ko:'5',type:'숫자',sentFr:'Cinq jours de la semaine.',sentKo:'5 근무일.'},
+  {fr:'Six',phon:'[sis]',ko:'6',type:'숫자',sentFr:'Six heures du matin.',sentKo:'아침 6시.'},
+  {fr:'Sept',phon:'[sɛt]',ko:'7',type:'숫자',sentFr:'Sept jours dans la semaine.',sentKo:'일주일에 7일.'},
+  {fr:'Huit',phon:'[ɥit]',ko:'8',type:'숫자',sentFr:'Huit heures de sommeil.',sentKo:'8시간 수면.'},
+  {fr:'Neuf',phon:'[nœf]',ko:'9',type:'숫자',sentFr:'Neuf mois de grossesse.',sentKo:'9개월 임신.'},
+  {fr:'Dix',phon:'[dis]',ko:'10',type:'숫자',sentFr:'Dix doigts.',sentKo:'10개의 손가락.'},
+  {fr:'Onze',phon:'[ɔ̃z]',ko:'11',type:'숫자',sentFr:'Onze équipes jouent.',sentKo:'11개 팀이 뜁니다.'},
+  {fr:'Douze',phon:'[duz]',ko:'12',type:'숫자',sentFr:'Douze mois dans l\'année.',sentKo:'일 년에 12개월.'},
+  {fr:'Vingt',phon:'[vɛ̃]',ko:'20',type:'숫자',sentFr:'Vingt euros.',sentKo:'20유로.'},
+  {fr:'Trente',phon:'[tʁɑ̃t]',ko:'30',type:'숫자',sentFr:'Trente minutes.',sentKo:'30분.'},
+  {fr:'Quarante',phon:'[kaʁɑ̃t]',ko:'40',type:'숫자',sentFr:'Quarante degrés.',sentKo:'40도.'},
+  {fr:'Cinquante',phon:'[sɛ̃kɑ̃t]',ko:'50',type:'숫자',sentFr:'Cinquante pour cent.',sentKo:'50퍼센트.'},
+  {fr:'Cent',phon:'[sɑ̃]',ko:'100',type:'숫자',sentFr:'Cent euros.',sentKo:'100유로.'},
+  {fr:'Mille',phon:'[mil]',ko:'1000',type:'숫자',sentFr:'Mille mots.',sentKo:'1000 단어.'},
+  {fr:'Million',phon:'[miljɔ̃]',ko:'백만',type:'숫자',sentFr:'Un million de personnes.',sentKo:'백만 명의 사람들.'},
+  {fr:'Premier',phon:'[pʁəmje]',ko:'첫 번째',type:'형용사',sentFr:'Le premier jour.',sentKo:'첫 번째 날.'},
+  {fr:'Deuxième',phon:'[døzjɛm]',ko:'두 번째',type:'형용사',sentFr:'Le deuxième étage.',sentKo:'두 번째 층.'},
+  {fr:'Dernier',phon:'[dɛʁnje]',ko:'마지막',type:'형용사',sentFr:'Le dernier train.',sentKo:'마지막 기차.'},
+  {fr:'Heure',phon:'[œʁ]',ko:'시간',type:'명사',sentFr:'Quelle heure est-il?',sentKo:'몇 시입니까?'},
+  {fr:'Minute',phon:'[minyt]',ko:'분',type:'명사',sentFr:'Attendez une minute.',sentKo:'1분 기다려주세요.'},
+  {fr:'Seconde',phon:'[səɡɔ̃d]',ko:'초',type:'명사',sentFr:'En quelques secondes.',sentKo:'몇 초 안에.'},
+  {fr:'Lundi',phon:'[lœ̃di]',ko:'월요일',type:'명사',sentFr:'Le cours est le lundi.',sentKo:'수업이 월요일에 있습니다.'},
+  {fr:'Mardi',phon:'[maʁdi]',ko:'화요일',type:'명사',sentFr:'Mardi c\'est le marché.',sentKo:'화요일은 장날입니다.'},
+  {fr:'Mercredi',phon:'[mɛʁkʁədi]',ko:'수요일',type:'명사',sentFr:'Mercredi je vais chez le médecin.',sentKo:'수요일에 의사한테 갑니다.'},
+  {fr:'Jeudi',phon:'[ʒødi]',ko:'목요일',type:'명사',sentFr:'Jeudi soir nous sortons.',sentKo:'목요일 저녁에 나갑니다.'},
+  {fr:'Vendredi',phon:'[vɑ̃dʁədi]',ko:'금요일',type:'명사',sentFr:'Vendredi c\'est la fête!',sentKo:'금요일은 파티입니다!'},
+  {fr:'Samedi',phon:'[samdi]',ko:'토요일',type:'명사',sentFr:'Samedi je me repose.',sentKo:'토요일에 쉽니다.'},
+  {fr:'Dimanche',phon:'[dimɑ̃ʃ]',ko:'일요일',type:'명사',sentFr:'Dimanche c\'est le repos.',sentKo:'일요일은 휴식입니다.'},
+  {fr:'Janvier',phon:'[ʒɑ̃vje]',ko:'1월',type:'명사',sentFr:'Janvier est froid.',sentKo:'1월은 춥습니다.'},
+  {fr:'Février',phon:'[fevʁije]',ko:'2월',type:'명사',sentFr:'Saint-Valentin en février.',sentKo:'2월에 발렌타인데이.'},
+  {fr:'Mars',phon:'[maʁs]',ko:'3월',type:'명사',sentFr:'Le printemps commence en mars.',sentKo:'봄이 3월에 시작됩니다.'},
+  {fr:'Avril',phon:'[avʁil]',ko:'4월',type:'명사',sentFr:'Avril en France est doux.',sentKo:'4월 프랑스는 온화합니다.'},
+  {fr:'Mai',phon:'[mɛ]',ko:'5월',type:'명사',sentFr:'Les fleurs de mai.',sentKo:'5월의 꽃들.'},
+  {fr:'Juin',phon:'[ʒɥɛ̃]',ko:'6월',type:'명사',sentFr:'L\'été commence en juin.',sentKo:'여름이 6월에 시작됩니다.'},
+  {fr:'Juillet',phon:'[ʒɥijɛ]',ko:'7월',type:'명사',sentFr:'Juillet est chaud.',sentKo:'7월은 덥습니다.'},
+  {fr:'Août',phon:'[u]',ko:'8월',type:'명사',sentFr:'Les vacances d\'août.',sentKo:'8월 방학.'},
+  {fr:'Septembre',phon:'[sɛptɑ̃bʁ]',ko:'9월',type:'명사',sentFr:'La rentrée en septembre.',sentKo:'9월 개학.'},
+  {fr:'Octobre',phon:'[ɔktɔbʁ]',ko:'10월',type:'명사',sentFr:'Octobre est coloré.',sentKo:'10월은 화려합니다.'},
+  {fr:'Novembre',phon:'[nɔvɑ̃bʁ]',ko:'11월',type:'명사',sentFr:'Novembre est gris.',sentKo:'11월은 흐립니다.'},
+  {fr:'Décembre',phon:'[desɑ̃bʁ]',ko:'12월',type:'명사',sentFr:'Noël en décembre.',sentKo:'12월 크리스마스.'},
+  {fr:'Moitié',phon:'[mwatje]',ko:'절반',type:'명사',sentFr:'La moitié du gâteau.',sentKo:'케이크의 절반.'},
+  {fr:'Quart',phon:'[kaʁ]',ko:'사분의 일',type:'명사',sentFr:'Un quart d\'heure.',sentKo:'15분.'},
+  {fr:'Double',phon:'[dubl]',ko:'두 배',type:'형용사',sentFr:'Le double du prix.',sentKo:'가격의 두 배.'},
+  {fr:'Triple',phon:'[tʁipl]',ko:'세 배',type:'형용사',sentFr:'Triple portion.',sentKo:'세 배 분량.'},
+  {fr:'Beaucoup',phon:'[boku]',ko:'많이',type:'부사',sentFr:'Il y a beaucoup de monde.',sentKo:'사람이 많습니다.'},
+  {fr:'Peu',phon:'[pø]',ko:'조금',type:'부사',sentFr:'Un peu de sel.',sentKo:'소금 조금.'},
+],
+color: [
+  {fr:'Rouge',phon:'[ʁuʒ]',ko:'빨간색',type:'형용사',sentFr:'La rose est rouge.',sentKo:'장미는 빨갑니다.'},
+  {fr:'Bleu',phon:'[blø]',ko:'파란색',type:'형용사',sentFr:'Le ciel est bleu.',sentKo:'하늘이 파랗습니다.'},
+  {fr:'Vert',phon:'[vɛʁ]',ko:'초록색',type:'형용사',sentFr:'L\'herbe est verte.',sentKo:'풀이 초록색입니다.'},
+  {fr:'Jaune',phon:'[ʒon]',ko:'노란색',type:'형용사',sentFr:'Le soleil est jaune.',sentKo:'태양은 노랗습니다.'},
+  {fr:'Blanc',phon:'[blɑ̃]',ko:'흰색',type:'형용사',sentFr:'La neige est blanche.',sentKo:'눈은 하얗습니다.'},
+  {fr:'Noir',phon:'[nwaʁ]',ko:'검은색',type:'형용사',sentFr:'Le chat est noir.',sentKo:'고양이가 검습니다.'},
+  {fr:'Gris',phon:'[ɡʁi]',ko:'회색',type:'형용사',sentFr:'Le ciel est gris.',sentKo:'하늘이 회색입니다.'},
+  {fr:'Rose',phon:'[ʁoz]',ko:'분홍색',type:'형용사',sentFr:'Sa robe est rose.',sentKo:'그녀의 드레스는 분홍색입니다.'},
+  {fr:'Orange',phon:'[ɔʁɑ̃ʒ]',ko:'주황색',type:'형용사',sentFr:'L\'orange est orange.',sentKo:'오렌지는 주황색입니다.'},
+  {fr:'Violet',phon:'[vjɔlɛ]',ko:'보라색',type:'형용사',sentFr:'La lavande est violette.',sentKo:'라벤더는 보라색입니다.'},
+  {fr:'Marron',phon:'[maʁɔ̃]',ko:'갈색',type:'형용사',sentFr:'La terre est marron.',sentKo:'땅이 갈색입니다.'},
+  {fr:'Beige',phon:'[bɛʒ]',ko:'베이지색',type:'형용사',sentFr:'Les murs sont beiges.',sentKo:'벽이 베이지색입니다.'},
+  {fr:'Doré',phon:'[dɔʁe]',ko:'금색',type:'형용사',sentFr:'Ses cheveux sont dorés.',sentKo:'그녀의 머리카락이 금색입니다.'},
+  {fr:'Argenté',phon:'[aʁʒɑ̃te]',ko:'은색',type:'형용사',sentFr:'Le métal est argenté.',sentKo:'금속이 은색입니다.'},
+  {fr:'Turquoise',phon:'[tyʁkwaz]',ko:'청록색',type:'형용사',sentFr:'La mer est turquoise.',sentKo:'바다가 청록색입니다.'},
+  {fr:'Cramoisi',phon:'[kʁamwazi]',ko:'진홍색',type:'형용사',sentFr:'La rose est cramoisie.',sentKo:'장미가 진홍색입니다.'},
+  {fr:'Clair',phon:'[klɛʁ]',ko:'밝은',type:'형용사',sentFr:'La couleur est claire.',sentKo:'색이 밝습니다.'},
+  {fr:'Foncé',phon:'[fɔ̃se]',ko:'어두운',type:'형용사',sentFr:'La couleur est foncée.',sentKo:'색이 어둡습니다.'},
+  {fr:'Vif',phon:'[vif]',ko:'선명한',type:'형용사',sentFr:'La couleur est vive.',sentKo:'색이 선명합니다.'},
+  {fr:'Pâle',phon:'[pal]',ko:'연한',type:'형용사',sentFr:'La couleur est pâle.',sentKo:'색이 연합니다.'},
+  {fr:'Cercle',phon:'[sɛʁkl]',ko:'원',type:'명사',sentFr:'Le cercle est parfait.',sentKo:'원이 완벽합니다.'},
+  {fr:'Carré',phon:'[kaʁe]',ko:'정사각형',type:'명사',sentFr:'Le carré a quatre côtés.',sentKo:'정사각형은 네 면이 있습니다.'},
+  {fr:'Triangle',phon:'[tʁijɑ̃ɡl]',ko:'삼각형',type:'명사',sentFr:'Le triangle a trois angles.',sentKo:'삼각형은 세 각도가 있습니다.'},
+  {fr:'Rectangle',phon:'[ʁɛktɑ̃ɡl]',ko:'직사각형',type:'명사',sentFr:'La porte est un rectangle.',sentKo:'문은 직사각형입니다.'},
+  {fr:'Ovale',phon:'[ɔval]',ko:'타원형',type:'명사',sentFr:'L\'œuf a une forme ovale.',sentKo:'달걀은 타원형입니다.'},
+  {fr:'Losange',phon:'[lozɑ̃ʒ]',ko:'마름모',type:'명사',sentFr:'Le losange est symétrique.',sentKo:'마름모는 대칭입니다.'},
+  {fr:'Grand',phon:'[ɡʁɑ̃]',ko:'큰',type:'형용사',sentFr:'La maison est grande.',sentKo:'집이 큽니다.'},
+  {fr:'Petit',phon:'[pəti]',ko:'작은',type:'형용사',sentFr:'Le chat est petit.',sentKo:'고양이가 작습니다.'},
+  {fr:'Long',phon:'[lɔ̃]',ko:'긴',type:'형용사',sentFr:'Le fleuve est long.',sentKo:'강이 깁니다.'},
+  {fr:'Court',phon:'[kuʁ]',ko:'짧은',type:'형용사',sentFr:'La jupe est courte.',sentKo:'치마가 짧습니다.'},
+  {fr:'Large',phon:'[laʁʒ]',ko:'넓은',type:'형용사',sentFr:'La route est large.',sentKo:'도로가 넓습니다.'},
+  {fr:'Étroit',phon:'[etʁwa]',ko:'좁은',type:'형용사',sentFr:'La ruelle est étroite.',sentKo:'골목이 좁습니다.'},
+  {fr:'Haut',phon:'[o]',ko:'높은',type:'형용사',sentFr:'La montagne est haute.',sentKo:'산이 높습니다.'},
+  {fr:'Bas',phon:'[ba]',ko:'낮은',type:'형용사',sentFr:'Le plafond est bas.',sentKo:'천장이 낮습니다.'},
+  {fr:'Épais',phon:'[epɛ]',ko:'두꺼운',type:'형용사',sentFr:'Le livre est épais.',sentKo:'책이 두꺼습니다.'},
+  {fr:'Mince',phon:'[mɛ̃s]',ko:'얇은',type:'형용사',sentFr:'La feuille est mince.',sentKo:'종이가 얇습니다.'},
+  {fr:'Lourd',phon:'[luʁ]',ko:'무거운',type:'형용사',sentFr:'La valise est lourde.',sentKo:'가방이 무겁습니다.'},
+  {fr:'Léger',phon:'[leʒe]',ko:'가벼운',type:'형용사',sentFr:'La plume est légère.',sentKo:'깃털이 가볍습니다.'},
+  {fr:'Dur',phon:'[dyʁ]',ko:'딱딱한',type:'형용사',sentFr:'La pierre est dure.',sentKo:'돌이 딱딱합니다.'},
+  {fr:'Mou',phon:'[mu]',ko:'부드러운',type:'형용사',sentFr:'Le coussin est mou.',sentKo:'쿠션이 부드럽습니다.'},
+  {fr:'Brillant',phon:'[bʁijɑ̃]',ko:'빛나는',type:'형용사',sentFr:'Le diamant est brillant.',sentKo:'다이아몬드가 빛납니다.'},
+  {fr:'Mat',phon:'[mat]',ko:'무광의',type:'형용사',sentFr:'La peinture est mate.',sentKo:'페인트가 무광입니다.'},
+  {fr:'Transparent',phon:'[tʁɑ̃spaʁɑ̃]',ko:'투명한',type:'형용사',sentFr:'Le verre est transparent.',sentKo:'유리가 투명합니다.'},
+  {fr:'Opaque',phon:'[ɔpak]',ko:'불투명한',type:'형용사',sentFr:'Le mur est opaque.',sentKo:'벽이 불투명합니다.'},
+  {fr:'Rugueux',phon:'[ʁyɡø]',ko:'거친',type:'형용사',sentFr:'La surface est rugueuse.',sentKo:'표면이 거칩니다.'},
+  {fr:'Lisse',phon:'[lis]',ko:'매끄러운',type:'형용사',sentFr:'La surface est lisse.',sentKo:'표면이 매끄럽습니다.'},
+  {fr:'Creux',phon:'[kʁø]',ko:'속이 빈',type:'형용사',sentFr:'L\'arbre est creux.',sentKo:'나무가 속이 빕니다.'},
+  {fr:'Plein',phon:'[plɛ̃]',ko:'가득 찬',type:'형용사',sentFr:'Le verre est plein.',sentKo:'잔이 가득 찼습니다.'},
+  {fr:'Vide',phon:'[vid]',ko:'텅 빈',type:'형용사',sentFr:'La bouteille est vide.',sentKo:'병이 텅 비었습니다.'},
+  {fr:'Droit',phon:'[dʁwa]',ko:'직선의',type:'형용사',sentFr:'La ligne est droite.',sentKo:'선이 직선입니다.'},
+],
+emotion: [
+  {fr:'Heureux',phon:'[øʁø]',ko:'행복한',type:'형용사',sentFr:'Je suis heureux.',sentKo:'저는 행복합니다.'},
+  {fr:'Triste',phon:'[tʁist]',ko:'슬픈',type:'형용사',sentFr:'Je suis triste.',sentKo:'저는 슬픕니다.'},
+  {fr:'En colère',phon:'[ɑ̃ kɔlɛʁ]',ko:'화난',type:'형용사',sentFr:'Je suis en colère.',sentKo:'저는 화났습니다.'},
+  {fr:'Peur',phon:'[pœʁ]',ko:'두려움',type:'명사',sentFr:'J\'ai peur.',sentKo:'두렵습니다.'},
+  {fr:'Surpris',phon:'[syʁpʁi]',ko:'놀란',type:'형용사',sentFr:'Je suis surpris!',sentKo:'놀랐습니다!'},
+  {fr:'Fatigué',phon:'[fatiɡe]',ko:'피곤한',type:'형용사',sentFr:'Je suis fatigué.',sentKo:'피곤합니다.'},
+  {fr:'Inquiet',phon:'[ɛ̃kjɛ]',ko:'걱정하는',type:'형용사',sentFr:'Je suis inquiet.',sentKo:'걱정됩니다.'},
+  {fr:'Content',phon:'[kɔ̃tɑ̃]',ko:'만족하는',type:'형용사',sentFr:'Je suis content.',sentKo:'만족합니다.'},
+  {fr:'Fier',phon:'[fjɛʁ]',ko:'자랑스러운',type:'형용사',sentFr:'Je suis fier de toi.',sentKo:'당신이 자랑스럽습니다.'},
+  {fr:'Jaloux',phon:'[ʒalu]',ko:'질투하는',type:'형용사',sentFr:'Il est jaloux.',sentKo:'그는 질투합니다.'},
+  {fr:'Amour',phon:'[amuʁ]',ko:'사랑',type:'명사',sentFr:'L\'amour est beau.',sentKo:'사랑은 아름답습니다.'},
+  {fr:'Joie',phon:'[ʒwa]',ko:'기쁨',type:'명사',sentFr:'La joie est dans mon cœur.',sentKo:'기쁨이 내 마음에 있습니다.'},
+  {fr:'Tristesse',phon:'[tʁistɛs]',ko:'슬픔',type:'명사',sentFr:'La tristesse me touche.',sentKo:'슬픔이 저를 만집니다.'},
+  {fr:'Colère',phon:'[kɔlɛʁ]',ko:'화',type:'명사',sentFr:'La colère est mauvaise.',sentKo:'화는 나쁩니다.'},
+  {fr:'Espoir',phon:'[ɛspwaʁ]',ko:'희망',type:'명사',sentFr:'L\'espoir est vital.',sentKo:'희망은 중요합니다.'},
+  {fr:'Courage',phon:'[kuʁaʒ]',ko:'용기',type:'명사',sentFr:'Ayez du courage!',sentKo:'용기를 내세요!'},
+  {fr:'Confiance',phon:'[kɔ̃fjɑ̃s]',ko:'신뢰',type:'명사',sentFr:'La confiance est importante.',sentKo:'신뢰가 중요합니다.'},
+  {fr:'Patience',phon:'[pasjɑ̃s]',ko:'인내',type:'명사',sentFr:'La patience est une vertu.',sentKo:'인내는 미덕입니다.'},
+  {fr:'Générosité',phon:'[ʒeneʁɔzite]',ko:'관대함',type:'명사',sentFr:'La générosité est noble.',sentKo:'관대함은 고귀합니다.'},
+  {fr:'Gentillesse',phon:'[ʒɑ̃tijɛs]',ko:'친절함',type:'명사',sentFr:'La gentillesse aide.',sentKo:'친절함이 도움이 됩니다.'},
+  {fr:'Sympathique',phon:'[sɛ̃patik]',ko:'친절한',type:'형용사',sentFr:'Il est très sympathique.',sentKo:'그는 매우 친절합니다.'},
+  {fr:'Timide',phon:'[timid]',ko:'수줍은',type:'형용사',sentFr:'Elle est timide.',sentKo:'그녀는 수줍습니다.'},
+  {fr:'Courageux',phon:'[kuʁaʒø]',ko:'용감한',type:'형용사',sentFr:'Il est courageux.',sentKo:'그는 용감합니다.'},
+  {fr:'Généreux',phon:'[ʒeneʁø]',ko:'관대한',type:'형용사',sentFr:'Elle est généreuse.',sentKo:'그녀는 관대합니다.'},
+  {fr:'Intelligent',phon:'[ɛ̃tɛliʒɑ̃]',ko:'똑똑한',type:'형용사',sentFr:'Il est très intelligent.',sentKo:'그는 매우 똑똑합니다.'},
+  {fr:'Drôle',phon:'[dʁol]',ko:'재미있는',type:'형용사',sentFr:'Elle est drôle.',sentKo:'그녀는 재미있습니다.'},
+  {fr:'Sérieux',phon:'[seʁjø]',ko:'진지한',type:'형용사',sentFr:'Il est sérieux.',sentKo:'그는 진지합니다.'},
+  {fr:'Calme',phon:'[kalm]',ko:'차분한',type:'형용사',sentFr:'Elle est calme.',sentKo:'그녀는 차분합니다.'},
+  {fr:'Nerveux',phon:'[nɛʁvø]',ko:'긴장한',type:'형용사',sentFr:'Je suis nerveux.',sentKo:'긴장됩니다.'},
+  {fr:'Optimiste',phon:'[ɔptimist]',ko:'낙관적인',type:'형용사',sentFr:'Je suis optimiste.',sentKo:'저는 낙관적입니다.'},
+  {fr:'Pessimiste',phon:'[pesimist]',ko:'비관적인',type:'형용사',sentFr:'Il est pessimiste.',sentKo:'그는 비관적입니다.'},
+  {fr:'Émotionnel',phon:'[emɔsjɔnɛl]',ko:'감성적인',type:'형용사',sentFr:'Elle est émotionnelle.',sentKo:'그녀는 감성적입니다.'},
+  {fr:'Rire',phon:'[ʁiʁ]',ko:'웃다',type:'동사',sentFr:'Je ris souvent.',sentKo:'저는 자주 웃습니다.'},
+  {fr:'Pleurer',phon:'[pløʁe]',ko:'울다',type:'동사',sentFr:'Elle pleure.',sentKo:'그녀가 웁니다.'},
+  {fr:'Aimer',phon:'[eme]',ko:'사랑하다',type:'동사',sentFr:'Je t\'aime.',sentKo:'사랑합니다.'},
+  {fr:'Détester',phon:'[detɛste]',ko:'싫어하다',type:'동사',sentFr:'Je déteste les mensonges.',sentKo:'저는 거짓말을 싫어합니다.'},
+  {fr:'Craindre',phon:'[kʁɛ̃dʁ]',ko:'두려워하다',type:'동사',sentFr:'Je crains l\'avenir.',sentKo:'미래가 두렵습니다.'},
+  {fr:'Espérer',phon:'[espere]',ko:'희망하다',type:'동사',sentFr:'J\'espère réussir.',sentKo:'성공하기를 희망합니다.'},
+  {fr:'Souffrir',phon:'[sufʁiʁ]',ko:'고통받다',type:'동사',sentFr:'Il souffre beaucoup.',sentKo:'그는 많이 고통받습니다.'},
+  {fr:'Se réjouir',phon:'[sə ʁeʒwiʁ]',ko:'기뻐하다',type:'동사',sentFr:'Je me réjouis de te voir.',sentKo:'당신을 만나서 기쁩니다.'},
+  {fr:'Complimenter',phon:'[kɔ̃plimɑ̃te]',ko:'칭찬하다',type:'동사',sentFr:'Je te complimente.',sentKo:'당신을 칭찬합니다.'},
+  {fr:'Excuser',phon:'[ɛkskyze]',ko:'용서하다',type:'동사',sentFr:'Excusez-moi.',sentKo:'용서해주세요.'},
+  {fr:'Remercier',phon:'[ʁəmɛʁsje]',ko:'감사하다',type:'동사',sentFr:'Je vous remercie.',sentKo:'감사드립니다.'},
+  {fr:'Féliciter',phon:'[felisite]',ko:'축하하다',type:'동사',sentFr:'Je vous félicite.',sentKo:'축하드립니다.'},
+  {fr:'Consoler',phon:'[kɔ̃sole]',ko:'위로하다',type:'동사',sentFr:'Il me console.',sentKo:'그가 저를 위로합니다.'},
+  {fr:'Encourager',phon:'[ɑ̃kuʁaʒe]',ko:'격려하다',type:'동사',sentFr:'Elle m\'encourage.',sentKo:'그녀가 저를 격려합니다.'},
+  {fr:'Surprendre',phon:'[syʁpʁɑ̃dʁ]',ko:'놀라게 하다',type:'동사',sentFr:'Tu me surprends.',sentKo:'당신이 저를 놀라게 합니다.'},
+  {fr:'Ennuyer',phon:'[ɑ̃nɥije]',ko:'지루하게 하다',type:'동사',sentFr:'Ça m\'ennuie.',sentKo:'지루합니다.'},
+  {fr:'Impressionner',phon:'[ɛ̃pʁɛsjɔne]',ko:'감명주다',type:'동사',sentFr:'Tu m\'impressionnes.',sentKo:'당신이 저에게 감명을 줍니다.'},
+  {fr:'Décevoir',phon:'[desəvwaʁ]',ko:'실망시키다',type:'동사',sentFr:'Ne me décevez pas.',sentKo:'저를 실망시키지 마세요.'},
+],
+};
+
+// Build flat words array
+const allWords = [];
+CATEGORIES.forEach(cat => {
+  (RAW[cat.id] || []).forEach(w => allWords.push({...w, cat: cat.id}));
+});
+
+// ── STATE ──
+let currentCat = 'daily';
+let currentWords = [];
+let currentIdx = 0;
+let learnedSet = new Set(JSON.parse(localStorage.getItem('fr_learned') || '[]'));
+let currentMode = 'flash';
+let quizCorrect = 0, quizWrong = 0, quizCurrent = null;
+let todayCount = parseInt(sessionStorage.getItem('fr_today') || '0');
+let synth = window.speechSynthesis;
+let recognition = null;
+let isRecording = false;
+
+// ── INIT ──
+function init() {
+  renderCats();
+  loadCategory('daily');
+  updateStats();
+}
+
+function updateStats() {
+  document.getElementById('todayCount').textContent = todayCount;
+  document.getElementById('learnedCount').textContent = learnedSet.size;
+}
+
+function renderCats() {
+  const el = document.getElementById('catList');
+  el.innerHTML = '';
+  CATEGORIES.forEach(cat => {
+    const words = RAW[cat.id] || [];
+    const learned = words.filter(w => learnedSet.has(cat.id+':'+w.fr)).length;
+    const pct = words.length ? Math.round(learned/words.length*100) : 0;
+    const btn = document.createElement('button');
+    btn.className = 'cat-btn' + (cat.id===currentCat?' active':'');
+    btn.innerHTML = `
+      <span class="cat-icon">${cat.icon}</span>
+      <div class="cat-info">
+        <span class="cat-name">${cat.name}</span>
+        <span class="cat-count">${words.length}단어 · ${pct}% 완료</span>
+        <div class="cat-prog"><div class="cat-prog-bar" style="width:${pct}%"></div></div>
+      </div>`;
+    btn.onclick = () => loadCategory(cat.id);
+    el.appendChild(btn);
+  });
+}
+
+function loadCategory(catId) {
+  currentCat = catId;
+  currentWords = [...(RAW[catId] || [])].map(w => ({...w, cat: catId}));
+  currentIdx = 0;
+  renderCats();
+  if (currentMode === 'flash') renderCard();
+  else if (currentMode === 'grid') renderGrid();
+  else if (currentMode === 'quiz') startQuiz();
+}
+
+// ── FLASH CARD ──
+function renderCard() {
+  if (!currentWords.length) return;
+  const w = currentWords[currentIdx];
+  document.getElementById('cardFr').textContent = w.fr;
+  document.getElementById('cardPhon').textContent = w.phon;
+  document.getElementById('cardKo').textContent = w.ko;
+  document.getElementById('cardType').textContent = w.type;
+  document.getElementById('cardSentFr').textContent = w.sentFr;
+  document.getElementById('cardSentKo').textContent = w.sentKo;
+  const total = currentWords.length;
+  const pct = Math.round((currentIdx+1)/total*100);
+  document.getElementById('cardLabel').textContent = `${currentIdx+1} / ${total}`;
+  document.getElementById('progressFill').style.width = pct+'%';
+  const key = w.cat+':'+w.fr;
+  const isLearned = learnedSet.has(key);
+  document.getElementById('learnedBtnText').textContent = isLearned ? '✓ 완료됨' : '학습 완료';
+  document.getElementById('learnedBtn').style.color = isLearned ? 'var(--success)' : '';
+  document.getElementById('learnedBtn').style.borderColor = isLearned ? 'var(--success)' : '';
+  // auto-play
+  setTimeout(() => speakWord(), 400);
+}
+
+function prevCard() {
+  if (currentIdx > 0) { currentIdx--; renderCard(); }
+}
+function nextCard() {
+  if (currentIdx < currentWords.length-1) { currentIdx++; renderCard(); }
+  else { showToast('🎉 카테고리 완료!', 'success'); }
+}
+
+function shuffleCards() {
+  currentWords = currentWords.sort(() => Math.random()-0.5);
+  currentIdx = 0;
+  renderCard();
+  showToast('🔀 단어를 섞었습니다');
+}
+
+function markLearned() {
+  if (!currentWords.length) return;
+  const w = currentWords[currentIdx];
+  const key = w.cat+':'+w.fr;
+  if (learnedSet.has(key)) {
+    learnedSet.delete(key);
+    showToast('↩ 완료 취소');
+  } else {
+    learnedSet.add(key);
+    todayCount++;
+    sessionStorage.setItem('fr_today', todayCount);
+    showToast('⭐ 학습 완료!', 'success');
+    triggerStarBurst();
+    setTimeout(nextCard, 600);
+  }
+  localStorage.setItem('fr_learned', JSON.stringify([...learnedSet]));
+  updateStats();
+  renderCats();
+  renderCard();
+}
+
+// ── TTS ──
+function speakFr(text) {
+  if (synth.speaking) synth.cancel();
+  const utt = new SpeechSynthesisUtterance(text);
+  utt.lang = 'fr-FR';
+  utt.rate = 0.85;
+  utt.pitch = 1;
+  const waves = document.getElementById('audioWaves');
+  if (waves) {
+    waves.classList.add('playing');
+    utt.onend = () => waves.classList.remove('playing');
+    utt.onerror = () => waves.classList.remove('playing');
+  }
+  synth.speak(utt);
+}
+
+function speakWord() {
+  if (!currentWords.length) return;
+  speakFr(currentWords[currentIdx].fr);
+}
+
+function speakQuiz() {
+  if (quizCurrent) speakFr(quizCurrent.fr);
+}
+
+// ── SPEECH RECOGNITION ──
+function startRecord() {
+  if (isRecording) { stopRecord(); return; }
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRecognition) {
+    showToast('🎤 Chrome 브라우저에서 이용해 주세요', 'error');
+    return;
+  }
+
+  recognition = new SpeechRecognition();
+  recognition.lang = 'fr-FR';
+  recognition.continuous = false;
+  recognition.interimResults = false;
+  recognition.maxAlternatives = 3;
+
+  let resultReceived = false;
+
+  recognition.onstart = () => {
+    isRecording = true;
+    resultReceived = false;
+    document.getElementById('recordStatus').classList.add('visible');
+    document.getElementById('recordBtn').style.background = 'var(--coral)';
+    document.getElementById('recordBtn').querySelector('span') &&
+      (document.getElementById('recordBtn').lastChild.textContent = ' 중지');
+  };
+
+  recognition.onresult = (e) => {
+    resultReceived = true;
+    // collect all alternatives across all results
+    const candidates = [];
+    for (let r = 0; r < e.results.length; r++) {
+      for (let a = 0; a < e.results[r].length; a++) {
+        candidates.push(e.results[r][a].transcript.toLowerCase().trim());
+      }
+    }
+    const target = currentWords[currentIdx].fr.toLowerCase().trim();
+    const best = candidates.reduce((top, c) => {
+      const s = calcSimilarity(c, target);
+      return s > top.score ? {text: c, score: s} : top;
+    }, {text: '', score: 0});
+
+    stopRecord();
+    if (best.score > 0.6) {
+      showToast('🎉 발음이 훌륭합니다!', 'success');
+      triggerStarBurst();
+      playSuccessSound();
+      document.getElementById('mainCard').classList.add('success-flash');
+      setTimeout(() => document.getElementById('mainCard').classList.remove('success-flash'), 600);
+    } else {
+      showToast(`🔄 다시 해보세요 — 인식된 발음: "${best.text || candidates[0] || '?'}"`, 'error');
+      document.getElementById('mainCard').classList.add('error-flash');
+      setTimeout(() => document.getElementById('mainCard').classList.remove('error-flash'), 500);
+    }
+  };
+
+  recognition.onerror = (e) => {
+    const wasRecording = isRecording;
+    stopRecord();
+    if (!wasRecording) return; // already stopped, ignore
+    switch (e.error) {
+      case 'not-allowed':
+      case 'service-not-allowed':
+        showToast('🔒 마이크 권한을 허용해 주세요 (주소창 왼쪽 자물쇠 아이콘)', 'error');
+        break;
+      case 'no-speech':
+        showToast('🎤 소리가 감지되지 않았습니다. 다시 눌러 말해보세요', 'error');
+        break;
+      case 'audio-capture':
+        showToast('🎤 마이크를 찾을 수 없습니다. 연결을 확인해 주세요', 'error');
+        break;
+      case 'network':
+        showToast('🌐 네트워크 오류 — 인터넷 연결을 확인해 주세요', 'error');
+        break;
+      case 'aborted':
+        // user cancelled — silent
+        break;
+      default:
+        showToast(`🎤 오류: ${e.error} — 다시 시도해 주세요`, 'error');
+    }
+  };
+
+  recognition.onend = () => {
+    // only fire "no result" toast if nothing was handled by onresult / onerror
+    if (isRecording && !resultReceived) {
+      stopRecord();
+    } else {
+      // clean up UI state without calling recognition.stop() again
+      isRecording = false;
+      document.getElementById('recordStatus').classList.remove('visible');
+      document.getElementById('recordBtn').style.background = '';
+    }
+  };
+
+  try {
+    recognition.start();
+  } catch (err) {
+    isRecording = false;
+    showToast('🎤 음성인식을 시작할 수 없습니다. 잠시 후 다시 시도해 주세요', 'error');
+  }
+}
+
+function stopRecord() {
+  isRecording = false;
+  try { if (recognition) recognition.stop(); } catch(e) {}
+  document.getElementById('recordStatus').classList.remove('visible');
+  document.getElementById('recordBtn').style.background = '';
+}
+
+function calcSimilarity(a, b) {
+  if (a === b) return 1;
+  if (b.includes(a) || a.includes(b)) return 0.85;
+  const longer = a.length > b.length ? a : b;
+  const shorter = a.length > b.length ? b : a;
+  const editDist = levenshtein(shorter, longer);
+  return (longer.length - editDist) / longer.length;
+}
+
+function levenshtein(a, b) {
+  const m = a.length, n = b.length;
+  const dp = Array.from({length:m+1}, (_,i) => Array.from({length:n+1}, (_,j) => i===0?j:j===0?i:0));
+  for (let i=1;i<=m;i++) for (let j=1;j<=n;j++)
+    dp[i][j] = a[i-1]===b[j-1] ? dp[i-1][j-1] : 1+Math.min(dp[i-1][j],dp[i][j-1],dp[i-1][j-1]);
+  return dp[m][n];
+}
+
+function playSuccessSound() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    [523,659,784].forEach((f,i) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.frequency.value = f;
+      osc.type = 'sine';
+      const t = ctx.currentTime + i*0.15;
+      gain.gain.setValueAtTime(0.3, t);
+      gain.gain.exponentialRampToValueAtTime(0.001, t+0.3);
+      osc.start(t); osc.stop(t+0.3);
+    });
+  } catch(e){}
+}
+
+// ── GRID MODE ──
+function renderGrid(filter='') {
+  const el = document.getElementById('gridView');
+  const words = filter
+    ? currentWords.filter(w => w.fr.toLowerCase().includes(filter.toLowerCase()) || w.ko.includes(filter))
+    : currentWords;
+  el.innerHTML = words.map(w => {
+    const key = w.cat+':'+w.fr;
+    const learned = learnedSet.has(key);
+    return `<div class="grid-card ${learned?'learned':''}" onclick="gridClick('${w.fr.replace(/'/g,"\\'")}')">
+      <div class="gc-fr">${w.fr}</div>
+      <div class="gc-ko">${w.ko}</div>
+      <button class="gc-play" onclick="event.stopPropagation();speakFr('${w.fr.replace(/'/g,"\\'")}')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5,3 19,12 5,21 5,3"/></svg>
+      </button>
+    </div>`;
+  }).join('');
+}
+
+function filterGrid(val) { renderGrid(val); }
+
+function gridClick(fr) {
+  const w = currentWords.find(x => x.fr === fr);
+  if (!w) return;
+  currentIdx = currentWords.indexOf(w);
+  setMode('flash');
+}
+
+// ── QUIZ MODE ──
+function startQuiz() {
+  quizCorrect = 0; quizWrong = 0;
+  updateQuizScore();
+  nextQuiz();
+}
+
+function nextQuiz() {
+  const words = currentWords;
+  if (words.length < 4) { showToast('단어가 4개 이상 필요합니다'); return; }
+  quizCurrent = words[Math.floor(Math.random()*words.length)];
+  document.getElementById('quizQ').textContent = quizCurrent.fr;
+  // 3 wrong options
+  const wrong = words.filter(w => w.fr !== quizCurrent.fr).sort(()=>Math.random()-0.5).slice(0,3);
+  const options = [...wrong, quizCurrent].sort(()=>Math.random()-0.5);
+  const optEl = document.getElementById('quizOptions');
+  optEl.innerHTML = options.map(o => `
+    <button class="quiz-opt" onclick="checkAnswer('${o.ko.replace(/'/g,"\\'")}')">${o.ko}</button>
+  `).join('');
+  document.getElementById('nextQuizBtn').style.display = 'none';
+  setTimeout(() => speakQuiz(), 300);
+}
+
+function checkAnswer(chosen) {
+  const opts = document.querySelectorAll('.quiz-opt');
+  opts.forEach(btn => {
+    btn.disabled = true;
+    if (btn.textContent === quizCurrent.ko) btn.classList.add('correct');
+    else if (btn.textContent === chosen && chosen !== quizCurrent.ko) btn.classList.add('wrong');
+  });
+  if (chosen === quizCurrent.ko) {
+    quizCorrect++;
+    showToast('✅ 정답!', 'success');
+    playSuccessSound();
+    triggerStarBurst();
+  } else {
+    quizWrong++;
+    showToast(`❌ 오답 — 정답: ${quizCurrent.ko}`, 'error');
+  }
+  updateQuizScore();
+  document.getElementById('nextQuizBtn').style.display = 'inline-flex';
+}
+
+function updateQuizScore() {
+  document.getElementById('qCorrect').textContent = quizCorrect;
+  document.getElementById('qWrong').textContent = quizWrong;
+  const total = quizCorrect + quizWrong;
+  document.getElementById('qAcc').textContent = total ? Math.round(quizCorrect/total*100)+'%' : '-';
+}
+
+// ── MODE SWITCH ──
+function setMode(mode) {
+  currentMode = mode;
+  document.querySelectorAll('.mode-tab').forEach(t => t.classList.remove('active'));
+  document.querySelector(`[data-mode="${mode}"]`).classList.add('active');
+  document.getElementById('flashMode').classList.toggle('hidden', mode!=='flash');
+  document.getElementById('gridMode').classList.toggle('hidden', mode!=='grid');
+  document.getElementById('quizMode').classList.toggle('hidden', mode!=='quiz');
+  if (mode === 'flash') renderCard();
+  else if (mode === 'grid') renderGrid();
+  else if (mode === 'quiz') startQuiz();
+}
+
+// ── TOAST ──
+function showToast(msg, type='') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'feedback-toast show ' + type;
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ── STAR BURST ──
+function triggerStarBurst() {
+  const burst = document.createElement('div');
+  burst.className = 'star-burst';
+  burst.style.cssText = 'top:50%;left:50%;';
+  const emojis = ['⭐','🌟','✨','💫','🎉'];
+  for (let i=0;i<8;i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    const angle = (i/8)*360;
+    const dist = 60 + Math.random()*40;
+    const tx = Math.cos(angle*Math.PI/180)*dist + 'px';
+    const ty = Math.sin(angle*Math.PI/180)*dist + 'px';
+    s.style.setProperty('--tx', tx);
+    s.style.setProperty('--ty', ty);
+    s.textContent = emojis[i%emojis.length];
+    burst.appendChild(s);
+  }
+  document.body.appendChild(burst);
+  setTimeout(() => burst.remove(), 900);
+}
+
+// ── KEYBOARD ──
+document.addEventListener('keydown', e => {
+  if (currentMode !== 'flash') return;
+  if (e.key === 'ArrowRight') nextCard();
+  if (e.key === 'ArrowLeft') prevCard();
+  if (e.key === ' ') { e.preventDefault(); speakWord(); }
+  if (e.key === 'Enter') markLearned();
+});
+
+init();
+</script>
+</body>
+</html>
